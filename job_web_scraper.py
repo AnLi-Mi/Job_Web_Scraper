@@ -7,3 +7,6 @@ page = requests.get(URL)
 soup = BeautifulSoup(page.content, 'html.parser')
 
 print(soup)
+
+results = soup.find('title')
+print(results)
