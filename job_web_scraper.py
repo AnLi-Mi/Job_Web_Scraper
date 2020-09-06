@@ -1,22 +1,26 @@
 import requests
 from bs4 import BeautifulSoup
 
-URL = 'https://nofluffjobs.com/pl/jobs/krakow?criteria=city%3Dkrakow&page=1'
-page = requests.get(URL)
+URL_base = 'https://nofluffjobs.com/pl/jobs/python?criteria=python&page='
+my_key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka", "junior", "Junior"]
 
-my_key_words = ["intern", "internship", "staz", "staż", "praktyka"]
+i=1
 
-soup = BeautifulSoup(page.content, 'html.parser')
-
-#print(soup)
-
-job_titles = soup.find_all('h4')
-
-for word in my_key_words:
+while i<15:
+    i = str(i)
+    url = URL_base + i
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, 'html.parser')
+    job_titles = soup.find_all('h4')
     for title in job_titles:
         title = title.text
         title = title.split()
-        if word in title:
-            title=' '.join(title)
-            print(title)
-       
+        for word in my_key_words:
+            if word in title:
+                title=' '.join(title)
+                print(title)
+            
+    i=int(i)
+    i+=1
+
+
