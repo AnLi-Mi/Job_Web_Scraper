@@ -21,19 +21,21 @@ while i<15:
     #looping theough the results of <a> elements
     for job in jobs:
         # scraping specific job information
-        title = job.find('h4')
-        company=job.find('span')
-        #salary = job.find ('')
-        # turning the strings of job results to lists to search for my key words in them
-        job = job.text  
-        job = job.split()
-        #looping through all my key words and selecting only <a> that have my key word
-        for word in my_key_words:
-            if word in job:
-                job=' '.join(job)
-                print (title.text, company.text, end='\n'*2)
-               # print (region)
-               # print (salary.text)
+        details=job.find_all('div', class_="posting-title__wrapper")
+        for d in details:
+            title = d.find('h4')
+            company=d.find('span')
+            #salary = details.find ('div class="posting-info position-relative d-none d-lg-flex flex-grow-1"')
+            # turning the strings of job results to lists to search for my key words in them
+            job = job.text  
+            job = job.split()
+            #looping through all my key words and selecting only <a> that have my key word
+            for word in my_key_words:
+                if word in job:
+                    job=' '.join(job)
+                    print (title.text, company.text, end='\n'*2)
+                   # print (region)
+                   
     #moving to the next result page        
     i=int(i)
     i+=1
