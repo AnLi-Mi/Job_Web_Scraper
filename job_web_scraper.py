@@ -15,17 +15,25 @@ while i<15:
     #scraping results for each page
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
-    #filtering only job titles which are all h4
+    #filtering only elementswhich are <a> - like clickable job offer 
     jobs = soup.find_all('a')
-    # turning the strings of job titles to lists to search for my key words in them
+
+    #looping theough the results of <a> elements
     for job in jobs:
-        job = job.text
+        # scraping specific job information
+        title = job.find('h4')
+        company=job.find('span')
+        #salary = job.find ('')
+        # turning the strings of job results to lists to search for my key words in them
+        job = job.text  
         job = job.split()
-        #looping through all my key words
+        #looping through all my key words and selecting only <a> that have my key word
         for word in my_key_words:
             if word in job:
                 job=' '.join(job)
-                print(job)
+                print (title.text, company.text, end='\n'*2)
+               # print (region)
+               # print (salary.text)
     #moving to the next result page        
     i=int(i)
     i+=1
