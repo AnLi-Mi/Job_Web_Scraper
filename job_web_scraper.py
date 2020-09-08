@@ -40,10 +40,23 @@ while i<15:
         for word in my_key_words:
             if word in job:
                 job=' '.join(job)
-                print (title.text, company.text)
-                print (region.text)
-                print (salary.text)
-                print (technology.text, end='\n'*2)
+                try:
+                    print (title.text, company.text)
+                except AttributeError:
+                    print (" No info")
+                try:
+                    print (f' Salary: {salary.text}')
+                except AttributeError:
+                    print (" Salary: No info")
+                try:
+                    print (f' Technologies: {technology.text}')
+                except AttributeError:
+                    print (" Technologies: No info")
+                try:
+                    print (f' Region: {region.text}', end='\n'*2)
+                except AttributeError:
+                    print (" Region: No info", end='\n'*2)
+                
                    
     #moving to the next result page        
     i=int(i)
