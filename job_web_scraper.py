@@ -39,52 +39,52 @@ while i<15:
             job = job.text  
             job = job.split()
 
-            for word in permanent_key_words:
-                for location in locations:
-                    if word in job and location in region:
-                        job=' '.join(job)
-                    try:
-                        print (title.text, company.text)
-                    except AttributeError:
-                        print (" No info")
-                    try:
-                        print (f' Salary: {salary.text}')
-                    except AttributeError:
-                        print (" Salary: No info")
-                    try:
-                        print (f' Technologies: {technology.text}')
-                    except AttributeError:
-                        print (" Technologies: No info")
-                    try:
-                        print (f' Region: {region.text}', end='\n'*2)
-                    except AttributeError:
-                        print (" Region: No info", end='\n'*2)
+        for word in permanent_key_words:
+            for location in locations:
+                if word in job and location in region:
+                    job=' '.join(job)
+                try:
+                    print (title.text, company.text)
+                except AttributeError:
+                    print (" No info")
+                try:
+                    print (f' Salary: {salary.text}')
+                except AttributeError:
+                    print (" Salary: No info")
+                try:
+                    print (f' Technologies: {technology.text}')
+                except AttributeError:
+                    print (" Technologies: No info")
+                try:
+                    print (f' Region: {region.text}', end='\n'*2)
+                except AttributeError:
+                    print (" Region: No info", end='\n'*2)
                     
 
 
 
 
             #looping through all my key words and selecting only <a> that have my key word
-            for word in intern_key_words:
-                if word in job:
-                    job=' '.join(job)
-                    try:
-                        print (title.text, company.text)
-                    except AttributeError:
-                        print (" No info")
-                    try:
-                        print (f' Salary: {salary.text}')
-                    except AttributeError:
-                        print (" Salary: No info")
-                    try:
-                        print (f' Technologies: {technology.text}')
-                    except AttributeError:
-                        print (" Technologies: No info")
-                    try:
-                        print (f' Region: {region.text}', end='\n'*2)
-                    except AttributeError:
-                        print (" Region: No info", end='\n'*2)
-                   
+        for word in intern_key_words:
+            if word in job:
+                job=' '.join(job)
+                try:
+                    print (title.text, company.text)
+                except AttributeError:
+                    print (" No info")
+                try:
+                     print (f' Salary: {salary.text}')
+                except AttributeError:
+                     print (" Salary: No info")
+                try:
+                     print (f' Technologies: {technology.text}')
+                except AttributeError:
+                     print (" Technologies: No info")
+                try:
+                     print (f' Region: {region.text}', end='\n'*2)
+                except AttributeError:
+                     print (" Region: No info", end='\n'*2)
+                  
                 
     #moving to the next result page        
     i=int(i)
