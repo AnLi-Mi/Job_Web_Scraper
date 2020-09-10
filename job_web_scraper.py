@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 URL_base = 'https://nofluffjobs.com/pl/jobs/python?criteria=python&page='
 intern_key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
 permanent_key_words = ["junior", "Junior"]
-locations = ["Kraków", "kraków", "cracow", "Cracow", "Krakow", "krakow", "zdalna", "Zdalna"]
+locations = ["Lublin", "Gliwice", "Kraków", "kraków", "cracow", "Cracow", "Krakow", "krakow", "zdalna", "Zdalna"]
 
 i=1
 
@@ -34,36 +34,37 @@ while i<15:
         for d in details:
             salary = d.find('span', class_="text-truncate badgy salary btn btn-outline-secondary btn-sm")
             region = d.find('span', class_="posting-info__location d-flex align-items-center ml-auto")
+            region = region.text
+            region= region.split()
             technology = d.find('object')
 
-            job = job.text  
-            job = job.split()
+        job = job.text  
+        job = job.split()
 
         for word in permanent_key_words:
-            for location in locations:
-                if word in job and location in region:
-                    job=' '.join(job)
-                try:
-                    print (title.text, company.text)
-                except AttributeError:
-                    print (" No info")
-                try:
-                    print (f' Salary: {salary.text}')
-                except AttributeError:
-                    print (" Salary: No info")
-                try:
-                    print (f' Technologies: {technology.text}')
-                except AttributeError:
-                    print (" Technologies: No info")
-                try:
-                    print (f' Region: {region.text}', end='\n'*2)
-                except AttributeError:
-                    print (" Region: No info", end='\n'*2)
-                    
+             if word in job:
+                 for location in locations:
+                     if  location in region:
+                         job=' '.join(job)
+                         region=' '.join(region)
+                         try:
+                            print (title.text, company.text)
+                         except AttributeError:
+                            print (" No info")
+                         try:
+                            print (f' Salary: {salary.text}')
+                         except AttributeError:
+                            print (" Salary: No info")
+                         try:
+                            print (f' Technologies: {technology.text}')
+                         except AttributeError:
+                            print (" Technologies: No info")
+                         try:
+                            print (f' Region: {region}', end='\n'*2)
+                         except AttributeError:
+                            print (" Region: No info", end='\n'*2)
 
-
-
-
+        
             #looping through all my key words and selecting only <a> that have my key word
         for word in intern_key_words:
             if word in job:
