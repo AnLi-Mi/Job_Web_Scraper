@@ -11,7 +11,7 @@ i=1
 
 
 while i<15:
-    # looping through multiple pages of results
+    # looping through multiple pages of results (I know there is 14 of them)
     i = str(i)
     url = URL_base + i
     #scraping results for each page
@@ -22,31 +22,42 @@ while i<15:
 
     #looping theough the results of <a> elements
     for job in jobs:
-        # scraping specific job information
+      
+        
+        # scraping ad's main information from first 'div' element
         name=job.find_all('div', class_="posting-title__wrapper")
         for n in name:
             title = n.find('h4')
             company=n.find('span')
             
-            # turning the strings of job results to lists to search for my key words in them
-
+            
+        #scraping ad's more specific details from second 'div' element
         details =job.find_all('div', class_="posting-info position-relative d-none d-lg-flex flex-grow-1")
         for d in details:
             salary = d.find('span', class_="text-truncate badgy salary btn btn-outline-secondary btn-sm")
+            technology = d.find('object')
             region = d.find('span', class_="posting-info__location d-flex align-items-center ml-auto")
+            # spliting the scrped region into a list so I can loop through its individual words later
             region = region.text
             region= region.split()
-            technology = d.find('object')
-
+            
+        # spliting the scrped job ad into a list so I can loop through its individual words later
         job = job.text  
         job = job.split()
 
+
+        # filter no1 - Junior positions (from 'permanent_key_words' list) in specific locations (from 'locations' list)
+
+        #looping through the ad's list of words to find a my key words for Junior position  
         for word in permanent_key_words:
              if word in job:
                  for location in locations:
+                     # comparing location element with scraped city name of the ad
                      if  location == region[0]:
+                         # joining the job and region into string again so it dispaly better in 'print'
                          job=' '.join(job)
                          region=' '.join(region)
+                         # printing the details of the filtered ads
                          try:
                             print (title.text, company.text)
                          except AttributeError:
@@ -65,10 +76,14 @@ while i<15:
                             print (" Region: No info", end='\n'*2)
 
         
-            #looping through all my key words and selecting only <a> that have my key word
+        # filter no2 - Internship positions (from 'intern_key_words' list) in any location
+
+        #looping through the ad's list of words to find a my key words for Intern position
         for word in intern_key_words:
             if word in job:
+                # joining the job and region into string again so it dispaly better in 'print'
                 job=' '.join(job)
+                # printing the details of the filtered ads
                 try:
                     print (title.text, company.text)
                 except AttributeError:
