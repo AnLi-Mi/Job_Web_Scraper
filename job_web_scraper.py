@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 URL_base = 'https://nofluffjobs.com/pl/jobs/python?criteria=python&page='
 intern_key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
 permanent_key_words = ["junior", "Junior"]
-locations = ["Lublin", "Gliwice", "Kraków", "kraków", "cracow", "Cracow", "Krakow", "krakow", "zdalna", "Zdalna"]
+locations = ["Lublin,", "Gliwce,", "Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna", "Zdalna"]
 
 i=1
 
@@ -44,7 +44,7 @@ while i<15:
         for word in permanent_key_words:
              if word in job:
                  for location in locations:
-                     if  location in region:
+                     if  location == region[0]:
                          job=' '.join(job)
                          region=' '.join(region)
                          try:
