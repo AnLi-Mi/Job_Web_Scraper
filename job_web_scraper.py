@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 
 
-intern_key_words = ["junior", "Junior", "intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
+intern_key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
 permanent_key_words = ["junior", "Junior"]
 locations = ["Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna", "Zdalna"]
 
