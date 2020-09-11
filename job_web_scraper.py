@@ -2,19 +2,19 @@ import requests
 from bs4 import BeautifulSoup
 
 
-URL_base = 'https://nofluffjobs.com/pl/jobs/python?criteria=python&page='
+
 intern_key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
 permanent_key_words = ["junior", "Junior"]
-locations = ["Lublin,", "Gliwce,", "Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna", "Zdalna"]
+locations = ["Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna", "Zdalna"]
 
 
-def scraping_jobs(url, number_of_pages):
+def scraping_nofluffjobs(number_of_pages):
     i=1
 
     while i<number_of_pages+1:
         # looping through multiple pages of results (I know there is 14 of them)
         i = str(i)
-        url = URL_base + i
+        url = 'https://nofluffjobs.com/pl/jobs/python?criteria=python&page=' + i
         #scraping results for each page
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
@@ -109,4 +109,8 @@ def scraping_jobs(url, number_of_pages):
 
 
 
-scraping_jobs(URL_base, 14)
+scraping_nofluffjobs(14)
+
+
+
+
