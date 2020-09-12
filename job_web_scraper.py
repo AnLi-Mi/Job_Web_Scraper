@@ -4,9 +4,9 @@ from requests_html import HTMLSession
 
 
 
-intern_key_words = ["junior", "Junior","intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
+intern_key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
 permanent_key_words = ["junior", "Junior"]
-locations = ["Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna", "Zdalna"]
+locations = ["Warszawa", "Wrocław", "Łódź", "Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna", "Zdalna"]
 
 
 def scraping_nofluffjobs(number_of_pages):
@@ -136,38 +136,71 @@ def scraping_bulldog(number_of_pages):
             company = job.find('div', class_='company')
             salary = job.find('div', class_='salary')
             technology = job.find('li', class_='tags-item')
-            region = job.find('div', class_='location')
-            #region=region.text
-            #region=region.split()
+            region = job.find('div', class_='location')        
+            
            
             # spliting the scrped job ad into a list so I can loop through its individual words later
             job = job.text  
             job = job.split()
 
-
+            
             for word in intern_key_words:
                 if word in job:
+                    print (" ^^^^^^^^ STAZE ^^^^^^^")
                     try:
-                        print (f'Position: {title}')
+                        print (f'Position: {title.text}')
                     except AttributeError:
                         print ("Position: No info")
                     try:
-                        print (f'Company: {company}')
+                        print (f'Company: {company.text}')
                     except AttributeError:
                         print ("Company: No info")
                     try:
-                         print (f'Salary: {salary}')
+                         print (f'Salary: {salary.text}')
                     except AttributeError:
                          print ("Salary: No info")
                     try:
-                         print (f'Technologies: {technology}')
+                         print (f'Technologies: {technology.text}')
                     except AttributeError:
                          print (" Technologies: No info")
                     try:
-                         print (f'Region: {region}', end='\n'*3)
+                         print (f'Region: {region.text}', end='\n'*3)
                     except AttributeError:
                          print ("Region: No info", end='\n'*3)
 
+
+            
+            for word in permanent_key_words:
+                for location in locations:
+                    try:
+                        region=region.text
+                        region=region.split()
+                        if location == region:
+                            job=' '.join(job)
+                            region=' '.join(region)
+                            print (" ^^^^^^^^ STAŁA PRACA ^^^^^^^")
+                            try:
+                                print (f'Position: {title.text}')
+                            except AttributeError:
+                                print ("Position: No info")
+                            try:
+                                print (f'Company: {company.text}')
+                            except AttributeError:
+                                print ("Company: No info")
+                            try:
+                                 print (f'Salary: {salary.text}')
+                            except AttributeError:
+                                 print ("Salary: No info")
+                            try:
+                                 print (f'Technologies: {technology.text}')
+                            except AttributeError:
+                                 print (" Technologies: No info")
+                            try:
+                                 print (f'Region: {region.text}', end='\n'*3)
+                            except AttributeError:
+                                 print ("Region: No info", end='\n'*3)
+                    except AttributeError:
+                        break
         i=int(i)
         i+=1
 
