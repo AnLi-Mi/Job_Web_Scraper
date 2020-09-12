@@ -4,7 +4,7 @@ from requests_html import HTMLSession
 
 
 
-intern_key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
+intern_key_words = ["junior", "Junior","intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
 permanent_key_words = ["junior", "Junior"]
 locations = ["Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna", "Zdalna"]
 
@@ -137,19 +137,42 @@ def scraping_bulldog(number_of_pages):
             salary = job.find('div', class_='salary')
             technology = job.find('li', class_='tags-item')
             region = job.find('div', class_='location')
-            region=region.text
-            region=region.split()
+            #region=region.text
+            #region=region.split()
            
             # spliting the scrped job ad into a list so I can loop through its individual words later
             job = job.text  
             job = job.split()
-            
+
+
+            for word in intern_key_words:
+                if word in job:
+                    try:
+                        print (f'Position: {title}')
+                    except AttributeError:
+                        print ("Position: No info")
+                    try:
+                        print (f'Company: {company}')
+                    except AttributeError:
+                        print ("Company: No info")
+                    try:
+                         print (f'Salary: {salary}')
+                    except AttributeError:
+                         print ("Salary: No info")
+                    try:
+                         print (f'Technologies: {technology}')
+                    except AttributeError:
+                         print (" Technologies: No info")
+                    try:
+                         print (f'Region: {region}', end='\n'*3)
+                    except AttributeError:
+                         print ("Region: No info", end='\n'*3)
 
         i=int(i)
         i+=1
 
 
-scraping_bulldog(1)
+scraping_bulldog(5)
 
 
                       
