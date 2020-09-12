@@ -128,8 +128,22 @@ def scraping_bulldog(number_of_pages):
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
         #filtering only elementswhich are <a> - like clickable job offer 
-        jobs = soup.find('a')
-        print (jobs.text)
+        jobs = soup.find_all('a')
+
+        for job in jobs:
+
+            title = job.find('h2')
+            company = job.find('div', class_='company')
+            salary = job.find('div', class_='salary')
+            technology = job.find('li', class_='tags-item')
+            region = job.find('div', class_='location')
+            region=region.text
+            region=region.split()
+           
+            # spliting the scrped job ad into a list so I can loop through its individual words later
+            job = job.text  
+            job = job.split()
+            
 
         i=int(i)
         i+=1
