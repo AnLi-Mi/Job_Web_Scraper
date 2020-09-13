@@ -159,23 +159,23 @@ def scraping_bulldog(number_of_pages):
                 if word in job:
                     print("Type: INTERNSHIP ANYEHWERE")
                     try:
-                        print (f'Position: {title.text}')
+                        print (f'Position: {title.text.strip()}')
                     except AttributeError:
                         print ("Position: No info")
                     try:
-                        print (f'Company: {company.text}')
+                        print (f'Company: {company.text.strip()}')
                     except AttributeError:
                         print ("Company: No info")
                     try:
-                         print (f'Salary: {salary.text}')
+                         print (f'Salary: {salary.text.strip()}')
                     except AttributeError:
                          print ("Salary: No info")
                     try:
-                         print (f'Technologies: {technology.text}')
+                         print (f'Technologies: {technology.text.strip()}')
                     except AttributeError:
                          print (" Technologies: No info")
                     try:
-                         print (f'Region: {region.text}', end='\n'*3)
+                         print (f'Region: {region.text.strip()}', end='\n'*3)
                     except AttributeError:
                          print ("Region: No info", end='\n'*3)
 
@@ -189,28 +189,27 @@ def scraping_bulldog(number_of_pages):
                         if location in region:
                             job=' '.join(job)
                             region=' '.join(region)
-                            #print (region)
                             print("Type: PERMENTNET JOB IN/FROM KRAKOW")
                             try:
-                                print (f'Position: {title.text}')
+                                print (f' Position: {title.text.strip()}')
                             except AttributeError:
-                                print ("Position: No info")
+                                print (" Position: No info")
                             try:
-                                print (f'Company: {company.text}')
+                                print (f' Company: {company.text.strip()}')
                             except AttributeError:
-                                print ("Company: No info")
+                                print (" Company: No info")
                             try:
-                                 print (f'Salary: {salary.text}')
+                                 print (f' Salary: {salary.text.strip()}')
                             except AttributeError:
-                                 print ("Salary: No info")
-                            try:
-                                 print (f'Technologies: {technology.text}')
+                                 print (" Salary: No info")
+                            try:                                 
+                                 print (f' Technologies: {technology.text.strip()}')
                             except AttributeError:
                                  print (" Technologies: No info")
                             try:
-                                 print (f'Region: {region}', end='\n'*3)
+                                 print (f' Region: {region}', end='\n'*3)
                             except AttributeError:
-                                 print ("Region: No info", end='\n'*3)
+                                 print (" Region: No info", end='\n'*3)
                     except AttributeError:
                         break
         i=int(i)
