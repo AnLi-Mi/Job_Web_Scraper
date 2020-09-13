@@ -6,7 +6,7 @@ from requests_html import HTMLSession
 
 intern_key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
 permanent_key_words = ["junior", "Junior"]
-locations = ["Warszawa", "Wrocław", "Łódź", "Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna", "Zdalna"]
+locations = ["Warszawa", "Wrocław", "Łódź", "Warszawa,", "Wrocław,", "Łódź,", "Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna", "Zdalna"]
 
 
 def scraping_nofluffjobs(number_of_pages):
@@ -175,9 +175,10 @@ def scraping_bulldog(number_of_pages):
                     try:
                         region=region.text
                         region=region.split()
-                        if location == region:
+                        if location in region:
                             job=' '.join(job)
                             region=' '.join(region)
+                            #print (region)
                             print (" ^^^^^^^^ STAŁA PRACA ^^^^^^^")
                             try:
                                 print (f'Position: {title.text}')
@@ -196,7 +197,7 @@ def scraping_bulldog(number_of_pages):
                             except AttributeError:
                                  print (" Technologies: No info")
                             try:
-                                 print (f'Region: {region.text}', end='\n'*3)
+                                 print (f'Region: {region}', end='\n'*3)
                             except AttributeError:
                                  print ("Region: No info", end='\n'*3)
                     except AttributeError:
