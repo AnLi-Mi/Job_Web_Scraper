@@ -6,7 +6,7 @@ from requests_html import HTMLSession
 
 intern_key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
 permanent_key_words = ["junior", "Junior"]
-locations = ["Warszawa", "Wrocław", "Łódź", "Warszawa,", "Wrocław,", "Łódź,", "Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna", "Zdalna"]
+locations = ["Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna", "Zdalna"]
 
 
 def scraping_nofluffjobs(number_of_pages):
@@ -62,10 +62,15 @@ def scraping_nofluffjobs(number_of_pages):
                              job=' '.join(job)
                              region=' '.join(region)
                              # printing the details of the filtered ads
+                             print("Type: PERMENTNET JOB IN/FROM KRAKOW")
                              try:
-                                print (title.text, company.text)
+                                 print (f' Position: {title.text}')
                              except AttributeError:
-                                print (" No info")
+                                 print (" Position: No info")
+                             try:
+                                 print (f' Company: {company.text}')
+                             except AttributeError:
+                                 print (" Company: No info")
                              try:
                                 print (f' Salary: {salary.text}')
                              except AttributeError:
@@ -88,10 +93,15 @@ def scraping_nofluffjobs(number_of_pages):
                     # joining the job and region into string again so it dispaly better in 'print'
                     job=' '.join(job)
                     # printing the details of the filtered ads
+                    print("Type: INTERNSHIP ANYEHWERE")
                     try:
-                        print (title.text, company.text)
+                        print (f' Position: {title.text}')
                     except AttributeError:
-                        print (" No info")
+                        print (" Position: No info")
+                    try:
+                        print (f' Company: {company.text}')
+                    except AttributeError:
+                        print (" Company: No info")
                     try:
                          print (f' Salary: {salary.text}')
                     except AttributeError:
@@ -130,6 +140,7 @@ def scraping_bulldog(number_of_pages):
         #filtering only elementswhich are <a> - like clickable job offer 
         jobs = soup.find_all('a')
 
+        
         for job in jobs:
 
             title = job.find('h2')
@@ -146,7 +157,7 @@ def scraping_bulldog(number_of_pages):
             
             for word in intern_key_words:
                 if word in job:
-                    print (" ^^^^^^^^ STAZE ^^^^^^^")
+                    print("Type: INTERNSHIP ANYEHWERE")
                     try:
                         print (f'Position: {title.text}')
                     except AttributeError:
@@ -168,8 +179,8 @@ def scraping_bulldog(number_of_pages):
                     except AttributeError:
                          print ("Region: No info", end='\n'*3)
 
-
-            
+                         
+        
             for word in permanent_key_words:
                 for location in locations:
                     try:
@@ -179,7 +190,7 @@ def scraping_bulldog(number_of_pages):
                             job=' '.join(job)
                             region=' '.join(region)
                             #print (region)
-                            print (" ^^^^^^^^ STAŁA PRACA ^^^^^^^")
+                            print("Type: PERMENTNET JOB IN/FROM KRAKOW")
                             try:
                                 print (f'Position: {title.text}')
                             except AttributeError:
