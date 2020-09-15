@@ -23,14 +23,11 @@ def permanent_jobs_krk_fetch(job):
                           
     for word in permanent_key_words:        
         if word in job:
-            print("permantnet")
-            print (word)
-            print (job)
             for location in locations:                                             
                 if location in region:                                
                     job=' '.join(job)
                     region=' '.join(region)
-                    print("Type: PERMANENT JOBS IN KRAKOW:", end='\n'*2)
+                    print("Type: PERMANENT JOBS IN KRAKOW:")
                     try:
                         print (f' Position: {title.text.strip()}')
                     except AttributeError:
@@ -65,13 +62,10 @@ def internships_anywhere_fetch(job):
     
     #looping through the ad's list of words to find a my key words for Intern position
     for word in intern_key_words:
-        if word in job:
-            print("internsip")
-            print (word)
-            print (job)
+        if word in job:            
             # joining the job and region into string again so it dispaly better in 'print'
             job=' '.join(job)
-            print("Type: INTERNSHIPS ANYWHERE:", end='\n'*2)
+            print("Type: INTERNSHIPS ANYWHERE:")
             # printing the details of the filtered ads
             try:
                 print (f' Position: {title.text}')
@@ -90,7 +84,7 @@ def internships_anywhere_fetch(job):
             except AttributeError:
                 print (" Technologies: No info")
             try:
-                print (f' Region: {region.text}', end='\n'*2)
+                print (f' Region: {"".join(region)}', end='\n'*2)
             except AttributeError:
                 print (" Region: No info", end='\n'*2)
                                                       
@@ -109,28 +103,36 @@ def no_fluffjobs(number_of_pages):
             # scraping ad's main information from first 'div' element
             name=job.find_all('div', class_="posting-title__wrapper")
             for n in name:
+                global title
                 title = n.find('h4')
+                global company
                 company=n.find('span')
+                #return title, company
+                
                                     
             #scraping ad's more specific details from second 'div' element
             details =job.find_all('div', class_="posting-info position-relative d-none d-lg-flex flex-grow-1")
             for d in details:
+                global salary
                 salary = d.find('span', class_="text-truncate badgy salary btn btn-outline-secondary btn-sm")
+                global technology
                 technology = d.find('object')
+                global region
                 region = d.find('span', class_="posting-info__location d-flex align-items-center ml-auto")
                 # spliting the scrped region into a list so I can loop through its individual words later
                 region = region.text
                 region= region.split()
-                                    
+                #return salary, technology, region
+                                                    
                 # spliting the scrped job ad into a list so I can loop through its individual words later
             job = job.text  
             job = job.split()
             #global region
-            #print(f'Region: {region.text}')
+            #print(f'Region: {region}')
 
             
             internships_anywhere_fetch(job)
-            #permanent_jobs_krk_fetch(job)
+            permanent_jobs_krk_fetch(job)
 
         i=int(i)
         i+=1
