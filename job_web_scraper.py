@@ -10,12 +10,12 @@ locations = ['Łódź',"Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", 
 
 
 def permanent_jobs_krk_fetch():
-    print("PERMANENT JOBS IN KRAKOW:")
+    print("PERMANENT JOBS IN KRAKOW:", end='\n'*2)
     permanent_key_words = ["junior", "Junior"]
     locations = ["Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna,", "Zdalna,", "zdalna", "Zdalna"]
     i=1
 
-    while i<3:
+    while i<18:
         # looping through multiple pages of results (I know there is 14 of them)
         i = str(i)
         url = 'https://nofluffjobs.com/pl/jobs/python?criteria=python&page=' + i
@@ -83,7 +83,7 @@ def permanent_jobs_krk_fetch():
         i+=1
 
 def internships_anywhere_fetch():
-    print("INTERNSHIPS ANYWHERE:")
+    print("INTERNSHIPS ANYWHERE:", end='\n'*2)
     i=1
 
     while i<18:
@@ -120,34 +120,33 @@ def internships_anywhere_fetch():
             job = job.text  
             job = job.split()
                         
-        intern_key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
-        #looping through the ad's list of words to find a my key words for Intern position
-        for word in intern_key_words:
-            if word in job:
-                # joining the job and region into string again so it dispaly better in 'print'
-                job=' '.join(job)
-                # printing the details of the filtered ads
-                print("Type: INTERNSHIP ANYEHWERE")
-                try:
-                    print (f' Position: {title.text}')
-                except AttributeError:
-                    print (" Position: No info")
-                try:
-                    print (f' Company: {company.text}')
-                except AttributeError:
-                    print (" Company: No info")
-                try:
-                    print (f' Salary: {salary.text}')
-                except AttributeError:
-                    print (" Salary: No info")
-                try:
-                    print (f' Technologies: {technology.text}')
-                except AttributeError:
-                    print (" Technologies: No info")
-                try:
-                    print (f' Region: {region.text}', end='\n'*2)
-                except AttributeError:
-                    print (" Region: No info", end='\n'*2)
+            intern_key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"]
+            #looping through the ad's list of words to find a my key words for Intern position
+            for word in intern_key_words:
+                if word in job:
+                    # joining the job and region into string again so it dispaly better in 'print'
+                    job=' '.join(job)
+                    # printing the details of the filtered ads
+                    try:
+                        print (f' Position: {title.text}')
+                    except AttributeError:
+                        print (" Position: No info")
+                    try:
+                        print (f' Company: {company.text}')
+                    except AttributeError:
+                        print (" Company: No info")
+                    try:
+                        print (f' Salary: {salary.text}')
+                    except AttributeError:
+                        print (" Salary: No info")
+                    try:
+                        print (f' Technologies: {technology.text}')
+                    except AttributeError:
+                        print (" Technologies: No info")
+                    try:
+                        print (f' Region: {region.text}', end='\n'*2)
+                    except AttributeError:
+                        print (" Region: No info", end='\n'*2)
 
         i=int(i)
         i+=1
