@@ -173,10 +173,6 @@ def scraping_bulldog(number_of_pages):
         
 
 
-no_fluffjobs(18)
-
-scraping_bulldog(3)
-
 
 
 
