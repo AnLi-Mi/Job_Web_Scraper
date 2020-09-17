@@ -68,7 +68,8 @@ def internships_anywhere_fetch(job):
             print("Type: INTERNSHIPS ANYWHERE")
             # printing the details of the filtered ads
             try:
-                print (f' Position: {title.text}')
+                t = title.text
+                print (f' Position: {t}')
             except AttributeError:
                 print (" Position: No info")
             try:
@@ -87,6 +88,7 @@ def internships_anywhere_fetch(job):
                 print (f' Region: {"".join(region)}', end='\n'*2)
             except AttributeError:
                 print (" Region: No info", end='\n'*2)
+            return t
                         
                        
         
@@ -175,6 +177,9 @@ def scraping_bulldog(number_of_pages):
 if __name__ == '__main__':
     no_fluffjobs(18)
     scraping_bulldog(5)
+    
+    
+    
 
 
 

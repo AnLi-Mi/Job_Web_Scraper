@@ -10,6 +10,12 @@ class Job_Web_Scraper_testing(unittest.TestCase):
         x = "".join(x)
         self.assertEqual(x, "Onet")
 
+    def test_internship_keywords(self):
+        job = job_web_scraper.jobs_fetch("https://nofluffjobs.com/pl/jobs?criteria=oracle&page=3")
+        result= job_web_scraper.internships_anywhere_fetch(job)
+        self.assertEqual (result, "Oracle ADF Developer Intern")
+    
+
 
 if __name__ == '__main__':
     unittest.main()
