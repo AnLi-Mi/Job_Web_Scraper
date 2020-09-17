@@ -1,6 +1,6 @@
 import unittest
 # from job_web_scraper import jobs_fetch
-import job_web_scraper
+from Job_Web_Scraper import job_web_scraper
 
 class Job_Web_Scraper_testing(unittest.TestCase):
 
@@ -9,6 +9,12 @@ class Job_Web_Scraper_testing(unittest.TestCase):
         x = job_web_scraper.jobs_fetch(url)[0].text.split()
         x = "".join(x)
         self.assertEqual(x, "Onet")
-        
+
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+
     
  

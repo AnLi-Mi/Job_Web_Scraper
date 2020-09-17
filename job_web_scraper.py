@@ -172,8 +172,9 @@ def scraping_bulldog(number_of_pages):
         i+=1
         
 
-
-
+if __name__ == '__main__':
+    no_fluffjobs(18)
+    scraping_bulldog(5)
 
 
 
