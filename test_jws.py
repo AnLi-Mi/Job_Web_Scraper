@@ -11,9 +11,22 @@ class Job_Web_Scraper_testing(unittest.TestCase):
         self.assertEqual(x, "Onet")
 
     def test_internship_keywords(self):
-        job = job_web_scraper.jobs_fetch("https://nofluffjobs.com/pl/jobs?criteria=oracle&page=3")
-        result= job_web_scraper.internships_anywhere_fetch(job)
-        self.assertEqual (result, "Oracle ADF Developer Intern")
+        jobs = job_web_scraper.jobs_fetch("https://nofluffjobs.com/pl/jobs?criteria=oracle&page=3")
+        a = []
+        b=[]
+        for job in jobs:
+            job = job.text  
+            job = job.split()
+            result = job_web_scraper.internships_anywhere_fetch(job)
+            a.append(result)
+            
+        for result in a:
+            if result != None:
+                b.append(result)
+
+        results = b[0]
+                
+        self.assertEqual (results, "Oracle ADF Developer Intern w COMP S.A. miccheck_circle 12 800 - 19 200 PLN java Warszawa, POL")
     
 
 
