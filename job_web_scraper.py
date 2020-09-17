@@ -65,30 +65,31 @@ def internships_anywhere_fetch(job):
         if word in job:
             # joining the job and region into string again so it dispaly better in 'print'
             job=' '.join(job)
-            print("Type: INTERNSHIPS ANYWHERE")
+        #    print("Type: INTERNSHIPS ANYWHERE")
             # printing the details of the filtered ads
-            try:
-                t = title.text
-                print (f' Position: {t}')
-            except AttributeError:
-                print (" Position: No info")
-            try:
-                print (f' Company: {company.text}')
-            except AttributeError:
-                print (" Company: No info")
-            try:
-                print (f' Salary: {salary.text}')
-            except AttributeError:
-                print (" Salary: No info")
-            try:
-                print (f' Technologies: {technology.text}')
-            except AttributeError:
-                print (" Technologies: No info")
-            try:
-                print (f' Region: {"".join(region)}', end='\n'*2)
-            except AttributeError:
-                print (" Region: No info", end='\n'*2)
-            return t
+#            try:
+ #               t = title.text
+  #              print (f' Position: {t}')
+   #         except AttributeError:
+    #            print (" Position: No info")
+     #       try:
+      #          print (f' Company: {company.text}')
+       #     except AttributeError:
+        #        print (" Company: No info")
+         #   try:
+          #      print (f' Salary: {salary.text}')
+           # except AttributeError:
+#                print (" Salary: No info")
+ #           try:
+  #              print (f' Technologies: {technology.text}')
+   #         except AttributeError:
+    #            print (" Technologies: No info")
+     #       try:
+      #          print (f' Region: {"".join(region)}', end='\n'*2)
+       #     except AttributeError:
+        #        print (" Region: No info", end='\n'*2)
+            return job
+            
                         
                        
         
