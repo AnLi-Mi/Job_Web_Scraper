@@ -17,13 +17,18 @@ class Job_Web_Scraper_testing(unittest.TestCase):
         for job in jobs:
             job = job.text  
             job = job.split()
-            result = job_web_scraper.internships_anywhere_fetch(job)
-            a.append(result)
+            try:
+                result = job_web_scraper.internships_anywhere_fetch(job)
+                print (result)
+                a.append(result)
+            except NameError:
+                pass
+        print(a)
             
         for result in a:
             if result != None:
                 b.append(result)
-
+                
         results = b[0]
                 
         self.assertEqual (results, "Oracle ADF Developer Intern w COMP S.A. miccheck_circle 12 800 - 19 200 PLN java Warszawa, POL")
