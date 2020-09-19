@@ -18,7 +18,7 @@ class NoFluffJobs():
         jobs_list=[]
         
         i=1
-        while 1< number_of_pages + 1:
+        while i < number_of_pages + 1:
             i = str(i)
             url = self.url + i  
     
@@ -27,13 +27,13 @@ class NoFluffJobs():
             page = requests.get(self.url)
             soup = BeautifulSoup(page.content, 'html.parser')
         #filtering only elementswhich are <a> - like clickable job offer 
-            job = soup.find_all('a', class_="posting-list-item posting-list-item--businessIntelligence highlightId-ZGZ7TSHK")
-            jobs_list.append(job)
+            jobs = soup.find_all('a')
+            for job in jobs:
+                jobs_list.append(job)
             i = int(i)
-            i = i+1    
-            
-            
-        return print(jobs_list)
+            i = i+1           
+           
+        return jobs_list
 
     def jobs_details_scraping(self):                
                 
@@ -76,7 +76,7 @@ job3 = NoFluffJobs("https://nofluffjobs.com/pl/jobs/python?criteria=python&page"
 
 
 NoFluffJobs.jobs_fetch(job3,3)
-NoFluffJobs.jobs_details_scraping(job3)
+#NoFluffJobs.jobs_details_scraping(job3)
 
 
 
