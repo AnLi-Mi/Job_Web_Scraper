@@ -3,10 +3,9 @@ from bs4 import BeautifulSoup
 from requests_html import HTMLSession
 
 
-class Jobs:
+class JobSites:
 
-    def __init__ (self, name, url):
-        self.name = name
+    def __init__ (self, url):
         self.url = url
 
 
@@ -18,91 +17,17 @@ class Jobs:
         #filtering only elementswhich are <a> - like clickable job offer 
         jobs = soup.find_all('a')
         return jobs
+
+    #def permanent_jobs_krk_fetch(self, job_fetch):
         
-class NoFluffJobs(Jobs):
+class NoFluffJobs(JobSites):
+    pass
 
-    def jobs_details_scraping(self, number_of_pages):
+class BulldogJobs(JobSites):
+    pass
 
-        i=1
-        jobs_details = []
-        while i<self.number_of_pages +1:
-            # looping through multiple pages of results (I know there is 14 of them)
-            i = str(i)
-            url = self.url + i
-
-            jobs=Jobs.jobs_fetch()
-
-            #looping theough the results of <a> elements
-            for job in jobs:                   
-                
-                # scraping ad's main information from first 'div' element
-                name=job.find_all('div', class_="posting-title__wrapper")
-                for n in name:
-                    global title
-                    title = n.find('h4')
-                    global company
-                    company=n.find('span')              
-                    
-                #scraping ad's more specific details from second 'div' element
-                details =job.find_all('div', class_="posting-info position-relative d-none d-lg-flex flex-grow-1")
-                for d in details:
-                    global salary
-                    salary = d.find('span', class_="text-truncate badgy salary btn btn-outline-secondary btn-sm")
-                    global technology
-                    technology = d.find('object')
-                    global region
-                    region = d.find('span', class_="posting-info__location d-flex align-items-center ml-auto")
-                    # spliting the scrped region into a list so I can loop through its individual words later
-                    region = region.text
-                    region= region.split()
-
-                jobs.details.append([title, company, salary, technology, region]) 
-                    
-                # spliting the scrped job ad into a list so I can loop through its individual words later
-                job = job.text  
-                job = job.split()
-
-                title, company, salary, technology, region
-
-            i=int(i)
-            i+=1
-
-        return jobs_details
-
-
-    
-class BulldogJobs(Jobs):
-
-    def jobs_details_scraping(self, number_of_pages):
-        
-        i=1
-        jobs_details = []
-        
-        while i<self.number_of_pages+1:
-            # looping through multiple pages of results (I know there is 14 of them)
-            i = str(i)
-            url = self.url + i
-            
-            jobs = Jobs.jobs_fetch()
-            
-            for job in jobs:
-
-                title = job.find('h2')
-                company = job.find('div', class_='company')
-                salary = job.find('div', class_='salary')
-                technology = job.find('li', class_='tags-item')
-                region = job.find('div', class_='location')
-
-                jobs_details.append([title, comapny, salary, technology, region])       
-                
-              
-            i=int(i)
-            i+=1
-            
-        return job_details
-
-page1 = NoFluffJobs("NoFluff", 'https://nofluffjobs.com/pl/jobs/python?criteria=python&page=')
-page2 = BulldogJobs("Bulldog", 'https://bulldogjob.pl/companies/jobs/s/skills,Python?page=')
+nofluffjobs = NoFluffJobs('https://nofluffjobs.com/pl/jobs/python?criteria=python&page=')
+bulldogjobs = BulldogJobs('https://bulldogjob.pl/companies/jobs/s/skills,Python?page=')
 
 def permanent_jobs_krk_fetch(job):
 
@@ -187,91 +112,91 @@ def internships_anywhere_fetch(job):
                         
                        
         
-#def no_fluffjobs(number_of_pages):
+def no_fluffjobs(number_of_pages):
 
- #   print ('------------------- NO FLUFF JOBS -------------------', end='\n'*2)
-#    i=1
+    print ('------------------- NO FLUFF JOBS -------------------', end='\n'*2)
+    i=1
 
-#    while i<number_of_pages +1:
+    while i<number_of_pages +1:
         # looping through multiple pages of results (I know there is 14 of them)
- #       i = str(i)
-  #      url = 'https://nofluffjobs.com/pl/jobs/python?criteria=python&page=' + i
+        i = str(i)
+        url = 'https://nofluffjobs.com/pl/jobs/python?criteria=python&page=' + i
 
-   #     jobs=jobs_fetch(url)
+        jobs=jobs_fetch(url)
 
         #looping theough the results of <a> elements
-   #     for job in jobs:                   
+        for job in jobs:                   
             
             # scraping ad's main information from first 'div' element
-    #        name=job.find_all('div', class_="posting-title__wrapper")
-     #       for n in name:
-      #          global title
-       #         title = n.find('h4')
-        #        global company
-         #       company=n.find('span')              
+            name=job.find_all('div', class_="posting-title__wrapper")
+            for n in name:
+                global title
+                title = n.find('h4')
+                global company
+                company=n.find('span')              
                 
             #scraping ad's more specific details from second 'div' element
- #           details =job.find_all('div', class_="posting-info position-relative d-none d-lg-flex flex-grow-1")
-  #          for d in details:
-   #             global salary
-    #            salary = d.find('span', class_="text-truncate badgy salary btn btn-outline-secondary btn-sm")
-     #           global technology
-      #          technology = d.find('object')
-       #         global region
-        #        region = d.find('span', class_="posting-info__location d-flex align-items-center ml-auto")
+            details =job.find_all('div', class_="posting-info position-relative d-none d-lg-flex flex-grow-1")
+            for d in details:
+                global salary
+                salary = d.find('span', class_="text-truncate badgy salary btn btn-outline-secondary btn-sm")
+                global technology
+                technology = d.find('object')
+                global region
+                region = d.find('span', class_="posting-info__location d-flex align-items-center ml-auto")
                 # spliting the scrped region into a list so I can loop through its individual words later
-    #            region = region.text
-     #           region= region.split()
+                region = region.text
+                region= region.split()
                 
             # spliting the scrped job ad into a list so I can loop through its individual words later
-   #         job = job.text  
-    #        job = job.split()
+            job = job.text  
+            job = job.split()
 
-       #     permanent_jobs_krk_fetch(job)
-        #    internships_anywhere_fetch(job)
+            permanent_jobs_krk_fetch(job)
+            internships_anywhere_fetch(job)
 
-     #   i=int(i)
-      #  i+=1
+        i=int(i)
+        i+=1
 
 
                                               
         
-#def scraping_bulldog(number_of_pages):
+def scraping_bulldog(number_of_pages):
 
- #   print ('------------------- BULLDOGJOBS -------------------', end='\n'*2)
+    print ('------------------- BULLDOGJOBS -------------------', end='\n'*2)
     
-  #  i=1
+    i=1
 
-   # while i<number_of_pages+1:
+    while i<number_of_pages+1:
         # looping through multiple pages of results (I know there is 14 of them)
-    #    i = str(i)
-     #   url = 'https://bulldogjob.pl/companies/jobs/s/skills,Python?page=' + i
+        i = str(i)
+        url = 'https://bulldogjob.pl/companies/jobs/s/skills,Python?page=' + i
         
-      #  jobs = jobs_fetch(url)
+        jobs = jobs_fetch(url)
         
-       # for job in jobs:
+        for job in jobs:
 
-        #    title = job.find('h2')
-         #   company = job.find('div', class_='company')
-          #  salary = job.find('div', class_='salary')
-    #        technology = job.find('li', class_='tags-item')
-     #       region = job.find('div', class_='location')        
+            title = job.find('h2')
+            company = job.find('div', class_='company')
+            salary = job.find('div', class_='salary')
+            technology = job.find('li', class_='tags-item')
+            region = job.find('div', class_='location')        
             
            
             # spliting the scrped job ad into a list so I can loop through its individual words later
-     #       job = job.text  
-      #      job = job.split()
+            job = job.text  
+            job = job.split()
 
-       #     permanent_jobs_krk_fetch(job)
-        #    internships_anywhere_fetch(job)         
+            permanent_jobs_krk_fetch(job)
+            internships_anywhere_fetch(job)         
             
-      #  i=int(i)
-     #   i+=1
+        i=int(i)
+        i+=1
         
 
-#if __name__ == '__main__':
- #   no_fluffjobs(18)
-  #  scraping_bulldog(5)
+if __name__ == '__main__':
+    no_fluffjobs(18)
+    scraping_bulldog(5)
     
     
     
