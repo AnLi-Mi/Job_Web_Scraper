@@ -15,26 +15,31 @@ class NoFluffJobs():
 
     def jobs_fetch(self,number_of_pages):
 
-        jobs_list=[]
+        a_list=[]
         
         i=1
         while i < number_of_pages + 1:
             i = str(i)
-            url = self.url + i  
-    
+            url = self.url + i
+                     
         #scraping results for each page
-        
-            page = requests.get(self.url)
+            page = requests.get(url)
             soup = BeautifulSoup(page.content, 'html.parser')
+            
         #filtering only elementswhich are <a> - like clickable job offer 
             jobs = soup.find_all('a')
+            
             for job in jobs:
-                jobs_list.append(job)
+                a_list.append(job)
+            
             i = int(i)
-            i = i+1           
-           
-        return jobs_list
+            i = i+1
 
+        self.job_all_details = a_list
+           
+        return self.job_all_details 
+
+   
     def jobs_details_scraping(self):                
                 
              # scraping ad's main information from first 'div' element
@@ -71,12 +76,12 @@ class NoFluffJobs():
         return self.position, self.company, self.salary, self.technology, self.region
 
     
-job1 = NoFluffJobs("https://nofluffjobs.com/pl/jobs/python?criteria=python&page","job_all_details3", "position1", "company1", "technology1", "salary1", "region1")
-job3 = NoFluffJobs("https://nofluffjobs.com/pl/jobs/python?criteria=python&page","job_all_details3","position3", "company3", "technology3", "salary3", "region3")
+job1 = NoFluffJobs("https://nofluffjobs.com/pl/jobs/python?criteria=python&page=","job_all_details3", "position1", "company1", "technology1", "salary1", "region1")
+job3 = NoFluffJobs("https://nofluffjobs.com/pl/jobs/python?criteria=python&page=","job_all_details3","position3", "company3", "technology3", "salary3", "region3")
 
 
-NoFluffJobs.jobs_fetch(job3,3)
-#NoFluffJobs.jobs_details_scraping(job3)
+NoFluffJobs.jobs_fetch(job3,18)
+
 
 
 
