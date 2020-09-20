@@ -37,7 +37,21 @@ class NoFluffJobs():
 
         self.job_all_details = a_list
            
-        return self.job_all_details 
+        return self.job_all_details
+
+    def jobs_filter(self):
+
+        key_words = ["junior", "Junior", "intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
+        job_list = []
+        print (len(self.job_all_details))
+        for a in self.job_all_details:
+            a = a.text
+            a = a.split()
+            for key_word in key_words:
+                if key_word in a:
+                    job_list.append(a)
+
+        return print (job_list)
 
    
     def jobs_details_scraping(self):                
@@ -81,6 +95,7 @@ job3 = NoFluffJobs("https://nofluffjobs.com/pl/jobs/python?criteria=python&page=
 
 
 NoFluffJobs.jobs_fetch(job3,18)
+NoFluffJobs.jobs_filter(job3)
 
 
 
