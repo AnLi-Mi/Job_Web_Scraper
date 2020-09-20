@@ -4,8 +4,10 @@ from bs4 import BeautifulSoup
             
 class NoFluffJobs():
 
-    def __init__ (self, url, job_all_details, position, company, technology, salary, region):
-        self.url = url
+    url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="
+
+    def __init__ (self, job_all_details, position, company, technology, salary, region):
+        #self.url = url
         self.job_all_details = job_all_details
         self.position = position
         self.company = company
@@ -43,13 +45,13 @@ class NoFluffJobs():
 
         key_words = ["junior", "Junior", "intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
         job_list = []
-        print (len(self.job_all_details))
         for a in self.job_all_details:
             a = a.text
             a = a.split()
             for key_word in key_words:
                 if key_word in a:
                     job_list.append(a)
+            
 
         return print (job_list)
 
@@ -90,8 +92,8 @@ class NoFluffJobs():
         return self.position, self.company, self.salary, self.technology, self.region
 
     
-job1 = NoFluffJobs("https://nofluffjobs.com/pl/jobs/python?criteria=python&page=","job_all_details3", "position1", "company1", "technology1", "salary1", "region1")
-job3 = NoFluffJobs("https://nofluffjobs.com/pl/jobs/python?criteria=python&page=","job_all_details3","position3", "company3", "technology3", "salary3", "region3")
+job1 = NoFluffJobs("job_all_details3", "position1", "company1", "technology1", "salary1", "region1")
+job3 = NoFluffJobs("job_all_details3","position3", "company3", "technology3", "salary3", "region3")
 
 
 NoFluffJobs.jobs_fetch(job3,18)
