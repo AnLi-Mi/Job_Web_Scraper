@@ -41,25 +41,25 @@ class NoFluffJobs():
            
         return self.a_elements
 
-    def jobs_filter(self):
+    def junior_and_intern_jobs_filter(self):
 
         key_words = ["junior", "Junior", "intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
         jobs_list = []
         for a_element in self.a_elements:
-            a_element = a_element.text
-            a_element = a_element.split()
+            a_element_copy = a_element.text
+            a_element_copy = a_element_copy.split()
             for key_word in key_words:
-                if key_word in a_element:
+                if key_word in a_element_copy:
                     jobs_list.append(a_element)
             
 
-        return print (jobs_list)
+        return print(jobs_list)
 
    
     def jobs_details_scraping(self):                
                 
-             # scraping ad's main information from first 'div' element
-        name=self.job_all_details.find_all('div', class_="posting-title__wrapper")
+        # scraping ad's main information from first 'div' element
+        name=self.a_elements.find_all('div', class_="posting-title__wrapper")
         for n in name:
             global title
             title = n.find('h4')
@@ -71,7 +71,7 @@ class NoFluffJobs():
             self.company = company
                     
                 #scraping ad's more specific details from second 'div' element
-        details =self.job_all_details.find_all('div', class_="posting-info position-relative d-none d-lg-flex flex-grow-1")
+        details =self.a_elements.find_all('div', class_="posting-info position-relative d-none d-lg-flex flex-grow-1")
 
         for d in details:
             global salary
@@ -97,7 +97,10 @@ job3 = NoFluffJobs("job_all_details3","position3", "company3", "technology3", "s
 
 
 NoFluffJobs.a_element_fetch(job3,18)
-NoFluffJobs.jobs_filter(job3)
+#NoFluffJobs.jobs_details_scraping(job3)
+NoFluffJobs.junior_and_intern_jobs_filter(job3)
+
+
 
 
 
