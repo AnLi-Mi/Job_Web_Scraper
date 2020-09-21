@@ -89,8 +89,10 @@ class NoFluffJobs():
         jobs_salary_region_tech = np.array(jobs_salary_region_tech, dtype=object) 
 
         jobs_all_details = np.concatenate((jobs_title_and_company, jobs_salary_region_tech), axis=1)
+
+        self.jobs_all_details = jobs_all_details
                          
-        return print(jobs_all_details)
+        return (self.jobs_all_details)
 
 
 
@@ -98,15 +100,19 @@ class NoFluffJobs():
     def junior_and_intern_jobs_filter(self):
 
         key_words = ["junior", "Junior", "intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
-        jobs_list = []
-        for a_element in self.a_elements:
-            a_element_copy = a_element.text
-            a_element_copy = a_element_copy.split()
-            for key_word in key_words:
-                if key_word in a_element_copy:
-                    jobs_list.append(a_element)
+        my_jobs_list = []
+        for job in self.jobs_all_details:            
             
-        return jobs_list
+            job_title = job[0]
+            job_title = job_title.text
+            job_title = job_title.split()
+            for key_word in key_words:
+                if key_word in job_title:
+                    my_jobs_list.append(job)
+
+            self.my_jobs_list = my_jobs_list
+            
+        return self.my_jobs_list, print(len(self.my_jobs_list))
 
     
 job1 = NoFluffJobs("job_all_details3", "position1", "company1", "technology1", "salary1", "region1")
@@ -115,7 +121,7 @@ job3 = NoFluffJobs("job_all_details3","position3", "company3", "technology3", "s
 
 NoFluffJobs.a_element_fetch(job1,18)
 NoFluffJobs.jobs_details_scraping(job1)
-#NoFluffJobs.junior_and_intern_jobs_filter(job3)
+NoFluffJobs.junior_and_intern_jobs_filter(job1)
 
 
 
