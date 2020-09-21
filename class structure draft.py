@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import numpy as np
 
             
 class NoFluffJobs():
@@ -41,6 +42,59 @@ class NoFluffJobs():
            
         return self.a_elements
 
+    
+
+   
+    def jobs_details_scraping(self):
+
+        jobs_title_and_company = []
+        jobs_salary_region_tech = []
+
+        for a_element in self.a_elements:
+                
+            # scraping ad's main information from first 'div' element
+            name=a_element.find_all('div', class_="posting-title__wrapper")
+            for n in name:
+                global title
+                title = n.find('h4')
+             #   title= title.text
+             #   self.position = title
+                global company
+                company=n.find('span')
+              #  company = company.text
+              #  self.company = company
+                jobs_title_and_company.append([title, company])
+                        
+                    #scraping ad's more specific details from second 'div' element
+            details =a_element.find_all('div', class_="posting-info position-relative d-none d-lg-flex flex-grow-1")
+
+            for d in details:
+                global salary
+                salary = d.find('span', class_="text-truncate badgy salary btn btn-outline-secondary btn-sm")
+               # salary =salary.text
+                #self.salary = salary
+                global technology
+                technology = d.find('object')
+                #technology = technology.text
+                #self.technology = technology
+                global region
+                region = d.find('span', class_="posting-info__location d-flex align-items-center ml-auto")
+                # spliting the scrped region into a list so I can loop through its individual words later
+                #region = region.text
+                #region= region.split()
+                #self.region = region
+                jobs_salary_region_tech.append([salary, technology, region])
+
+        jobs_title_and_company = np.array(jobs_title_and_company, dtype=object)
+        jobs_salary_region_tech = np.array(jobs_salary_region_tech, dtype=object) 
+
+        jobs_all_details = np.concatenate((jobs_title_and_company, jobs_salary_region_tech), axis=1)
+                         
+        return print(jobs_all_details)
+
+
+
+
     def junior_and_intern_jobs_filter(self):
 
         key_words = ["junior", "Junior", "intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
@@ -52,53 +106,16 @@ class NoFluffJobs():
                 if key_word in a_element_copy:
                     jobs_list.append(a_element)
             
-
-        return print(jobs_list)
-
-   
-    def jobs_details_scraping(self):                
-                
-        # scraping ad's main information from first 'div' element
-        name=self.a_elements.find_all('div', class_="posting-title__wrapper")
-        for n in name:
-            global title
-            title = n.find('h4')
-            title= title.text
-            self.position = title
-            global company
-            company=n.find('span')
-            company = company.text
-            self.company = company
-                    
-                #scraping ad's more specific details from second 'div' element
-        details =self.a_elements.find_all('div', class_="posting-info position-relative d-none d-lg-flex flex-grow-1")
-
-        for d in details:
-            global salary
-            salary = d.find('span', class_="text-truncate badgy salary btn btn-outline-secondary btn-sm")
-            salary =salary.text
-            self.salary = salary
-            #global technology
-            #technology = d.find('object')
-            #technology = technology.text
-            #self.technology = technology
-            global region
-            region = d.find('span', class_="posting-info__location d-flex align-items-center ml-auto")
-            # spliting the scrped region into a list so I can loop through its individual words later
-            region = region.text
-            region= region.split()
-            self.region = region
-                         
-        return self.position, self.company, self.salary, self.technology, self.region
+        return jobs_list
 
     
 job1 = NoFluffJobs("job_all_details3", "position1", "company1", "technology1", "salary1", "region1")
 job3 = NoFluffJobs("job_all_details3","position3", "company3", "technology3", "salary3", "region3")
 
 
-NoFluffJobs.a_element_fetch(job3,18)
-#NoFluffJobs.jobs_details_scraping(job3)
-NoFluffJobs.junior_and_intern_jobs_filter(job3)
+NoFluffJobs.a_element_fetch(job1,18)
+NoFluffJobs.jobs_details_scraping(job1)
+#NoFluffJobs.junior_and_intern_jobs_filter(job3)
 
 
 
