@@ -6,16 +6,16 @@ class NoFluffJobs():
 
     url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="
 
-    def __init__ (self, job_all_details, position, company, technology, salary, region):
+    def __init__ (self, a_elements, position, company, technology, salary, region):
         #self.url = url
-        self.job_all_details = job_all_details
+        self.a_elementss = a_elements
         self.position = position
         self.company = company
         self.salary = salary
         self.technology = technology
         self.region = region
 
-    def jobs_fetch(self,number_of_pages):
+    def a_element_fetch(self,number_of_pages):
 
         a_list=[]
         
@@ -29,31 +29,31 @@ class NoFluffJobs():
             soup = BeautifulSoup(page.content, 'html.parser')
             
         #filtering only elementswhich are <a> - like clickable job offer 
-            jobs = soup.find_all('a')
+            a_elements = soup.find_all('a')
             
-            for job in jobs:
-                a_list.append(job)
+            for a_element in a_elements:
+                a_list.append(a_element)
             
             i = int(i)
             i = i+1
 
-        self.job_all_details = a_list
+        self.a_elements = a_list
            
-        return self.job_all_details
+        return self.a_elements
 
     def jobs_filter(self):
 
         key_words = ["junior", "Junior", "intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
-        job_list = []
-        for a in self.job_all_details:
-            a = a.text
-            a = a.split()
+        jobs_list = []
+        for a_element in self.a_elements:
+            a_element = a_element.text
+            a_element = a_element.split()
             for key_word in key_words:
-                if key_word in a:
-                    job_list.append(a)
+                if key_word in a_element:
+                    jobs_list.append(a_element)
             
 
-        return print (job_list)
+        return print (jobs_list)
 
    
     def jobs_details_scraping(self):                
@@ -96,7 +96,7 @@ job1 = NoFluffJobs("job_all_details3", "position1", "company1", "technology1", "
 job3 = NoFluffJobs("job_all_details3","position3", "company3", "technology3", "salary3", "region3")
 
 
-NoFluffJobs.jobs_fetch(job3,18)
+NoFluffJobs.a_element_fetch(job3,18)
 NoFluffJobs.jobs_filter(job3)
 
 
