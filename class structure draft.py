@@ -124,7 +124,9 @@ class NoFluffJobs():
             
         return self.my_jobs_list
 
-    def job_listing_generator(self):
+    def job_objects_generator(self):
+
+        job_objects_list = []
 
         for job in self.my_jobs_list:
             
@@ -158,7 +160,20 @@ class NoFluffJobs():
             except AttributeError:
                 region = "No Info"
 
-            print (f" Title: {title},\n Company: {company},\n Salary: {salary},\n Technology: {technology},\n Region: {region}\n\n\n") 
+            print (f" Title: {title},\n Company: {company},\n Salary: {salary},\n Technology: {technology},\n Region: {region}\n\n\n")
+
+            x = Jobs(title, company, technology, salary, region)
+            job_objects_list.append(x)
+
+           
+        return print (job_objects_list)
+
+        
+
+            
+                
+
+        
             
             
             
@@ -173,7 +188,7 @@ job3 = NoFluffJobs("job_all_details3","position3", "company3", "technology3", "s
 NoFluffJobs.a_element_fetch(job1,18)
 NoFluffJobs.jobs_details_scraping(job1)
 NoFluffJobs.junior_and_intern_jobs_filter(job1)
-NoFluffJobs.job_objects_generating(job1)
+NoFluffJobs.job_objects_generator(job1)
 
 
 
