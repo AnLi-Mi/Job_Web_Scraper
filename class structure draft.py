@@ -4,12 +4,17 @@ import numpy as np
 
 
 class Jobs:
-    def __init__ (self, position, company, technology, salary, region):
+    def __init__ (self, name, position, company, technology, salary, region):
+        self.name = name
         self.position = position
         self.company = company
         self.salary = salary
         self.technology = technology
         self.region = region
+
+    def __str__(self):
+     
+        return f"{name+i},\n Title: {title},\n Company: {company},\n Salary: {salary},\n Technology: {technology},\n Region: {region}\n\n\n"
     
 
             
@@ -17,15 +22,9 @@ class NoFluffJobs():
 
     url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="
 
-    def __init__ (self, a_elements, position, company, technology, salary, region):
-        #self.url = url
-        self.a_elementss = a_elements
-        self.position = position
-        self.company = company
-        self.salary = salary
-        self.technology = technology
-        self.region = region
-
+    def __init__ (self):
+        pass
+    
     def a_element_fetch(self,number_of_pages):
 
         a_list=[]
@@ -127,6 +126,8 @@ class NoFluffJobs():
     def job_objects_generator(self):
 
         job_objects_list = []
+        i = 1
+        name = "job"
 
         for job in self.my_jobs_list:
             
@@ -160,13 +161,19 @@ class NoFluffJobs():
             except AttributeError:
                 region = "No Info"
 
-            print (f" Title: {title},\n Company: {company},\n Salary: {salary},\n Technology: {technology},\n Region: {region}\n\n\n")
+            i=str(i)
+                   
 
-            x = Jobs(title, company, technology, salary, region)
+            print (f"{name+i},\n Title: {title},\n Company: {company},\n Salary: {salary},\n Technology: {technology},\n Region: {region}\n\n\n")
+
+            x = Jobs(name+i, title, company, technology, salary, region)
             job_objects_list.append(x)
 
+            i=int(i)
+            i=i+1
+
            
-        return print (job_objects_list)
+        return print (job_objects_list), print(type(job_objects_list[0]))
 
         
 
@@ -181,14 +188,17 @@ class NoFluffJobs():
             
 
     
-job1 = NoFluffJobs("job_all_details3", "position1", "company1", "technology1", "salary1", "region1")
-job3 = NoFluffJobs("job_all_details3","position3", "company3", "technology3", "salary3", "region3")
+job_site1= NoFluffJobs()
 
 
-NoFluffJobs.a_element_fetch(job1,18)
-NoFluffJobs.jobs_details_scraping(job1)
-NoFluffJobs.junior_and_intern_jobs_filter(job1)
-NoFluffJobs.job_objects_generator(job1)
+
+NoFluffJobs.a_element_fetch(job_site1,18)
+NoFluffJobs.jobs_details_scraping(job_site1)
+NoFluffJobs.junior_and_intern_jobs_filter(job_site1)
+NoFluffJobs.job_objects_generator(job_site1)
+
+print (type(job_site1))
+
 
 
 
