@@ -2,6 +2,16 @@ import requests
 from bs4 import BeautifulSoup
 import numpy as np
 
+
+class Jobs:
+    def __init__ (self, position, company, technology, salary, region):
+        self.position = position
+        self.company = company
+        self.salary = salary
+        self.technology = technology
+        self.region = region
+    
+
             
 class NoFluffJobs():
 
@@ -112,7 +122,48 @@ class NoFluffJobs():
 
             self.my_jobs_list = my_jobs_list
             
-        return self.my_jobs_list, print(len(self.my_jobs_list))
+        return self.my_jobs_list
+
+    def job_listing_generator(self):
+
+        for job in self.my_jobs_list:
+            
+            title = job[0]
+            try:
+                title = title.text.strip()
+            except AttributeError:
+                title = "No Info"
+            
+            company = job[1]
+            try:
+                company= company.text.strip()
+            except AttributeError:
+                company = "No Info"
+                
+            salary = job[2]
+            try:
+                salary= salary.text.strip()
+            except AttributeError:
+                salary = "No Info"
+                
+            technology = job[3]
+            try:
+                technology = technology.text.strip()
+            except AttributeError:
+                technology = "No Info"
+                
+            region = job[4]
+            try:
+                region = region.text.strip()
+            except AttributeError:
+                region = "No Info"
+
+            print (f" Title: {title},\n Company: {company},\n Salary: {salary},\n Technology: {technology},\n Region: {region}\n\n\n") 
+            
+            
+            
+            
+            
 
     
 job1 = NoFluffJobs("job_all_details3", "position1", "company1", "technology1", "salary1", "region1")
@@ -122,6 +173,7 @@ job3 = NoFluffJobs("job_all_details3","position3", "company3", "technology3", "s
 NoFluffJobs.a_element_fetch(job1,18)
 NoFluffJobs.jobs_details_scraping(job1)
 NoFluffJobs.junior_and_intern_jobs_filter(job1)
+NoFluffJobs.job_objects_generating(job1)
 
 
 
