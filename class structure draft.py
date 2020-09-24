@@ -15,15 +15,11 @@ class Jobs:
      
         return f" Title: {self.position},\n Company: {self.company},\n Salary: {self.salary},\n Technology: {self.technology},\n Region: {self.region}\n\n\n"
     
+class JobSites():
 
-            
-class NoFluffJobs():
+    def __init__ (self, url):
+        self.url=url
 
-    url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="
-
-    def __init__ (self):
-        pass
-    
     def a_element_fetch(self,number_of_pages):
 
         a_list=[]
@@ -46,19 +42,27 @@ class NoFluffJobs():
             i = int(i)
             i = i+1
 
-        self.a_elements = a_list
-           
-        return self.a_elements
+                
+        return a_list
 
     
+            
+class NoFluffJobs(JobSites):
 
+    url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="
+
+    def __init__ (self):
+        pass
+    
+  
    
-    def jobs_details_scraping(self):
+    def jobs_details_scraping(self, number_of_pages):
 
         jobs_title_and_company = []
         jobs_salary_region_tech = []
+        a_elements = JobSites.a_element_fetch(self, number_of_pages)
 
-        for a_element in self.a_elements:
+        for a_element in a_elements:
                 
             # scraping ad's main information from first 'div' element
             name=a_element.find_all('div', class_="posting-title__wrapper")
@@ -98,39 +102,72 @@ class NoFluffJobs():
 
         jobs_all_details = np.concatenate((jobs_title_and_company, jobs_salary_region_tech), axis=1)
 
-        self.jobs_all_details = jobs_all_details
+       
                          
-        return (self.jobs_all_details)
+        return (jobs_all_details)
 
 
 
 
-    def junior_and_intern_jobs_filter(self):
+    def intern_jobs_filter(self, number_of_pages):
 
-        key_words = ["junior", "Junior", "intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
-        my_jobs_list = []
-        for job in self.jobs_all_details:            
+        key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
+        my_internships_list = []
+        jobs_all_details = NoFluffJobs.jobs_details_scraping(self, number_of_pages)
+        for job in jobs_all_details:            
             
             job_title = job[0]
             job_title = job_title.text
             job_title = job_title.split()
             for key_word in key_words:
                 if key_word in job_title:
-                    my_jobs_list.append(job)
+                    my_internships_list.append(job)
 
-            self.my_jobs_list = my_jobs_list
+                       
+        return my_internships_list
+
+    def KRKjunior_jobs_filter(self, number_of_pages):
+
+        permanent_key_words = ["junior", "Junior"]
+        locations = ["Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna,", "Zdalna,", "zdalna", "Zdalna"]
+        my_junior_list = []
+
+        jobs_all_details = NoFluffJobs.jobs_details_scraping(self, number_of_pages)
+        for job in jobs_all_details:            
+    
+            job_title = job[0]
+            job_title = job_title.text
+            job_title = job_title.split()
             
-        return self.my_jobs_list
+            for key_word in permanent_key_words:
+                if key_word in job_title:
+                    for location in locations:
+                        region = job[4]
+                        region = region.text
+                        region = region.split()
+                        if location in region:
+                            my_junior_list.append(job)
 
-    def job_objects_generator(self):
+            self.my_junior_list = my_junior_list
+            
+        return self.my_junior_list
+
+        
+
+    def job_objects_generator(self, number_of_pages):
 
         print ("JOB OFFERS FROM NOFLUFFJOBS SITE:")
           
         job_objects_list = []
 
         i = 1
+
+        my_internships_list= NoFluffJobs.intern_jobs_filter(self, number_of_pages)
+        my_junior_list = NoFluffJobs.KRKjunior_jobs_filter(self, number_of_pages)
+
+        my_jobs_list = my_internships_list + my_junior_list
         
-        for job in self.my_jobs_list:
+        for job in my_jobs_list:
             global title
             title = job[0]
             try:
@@ -166,8 +203,7 @@ class NoFluffJobs():
             except AttributeError:
                 region = "No Info"
 
-            
-                   
+                               
 
             print (f" JOB no {i}:\n Title: {title},\n Company: {company},\n Salary: {salary},\n Technology: {technology},\n Region: {region}\n\n\n")
 
@@ -209,10 +245,11 @@ class NoFluffJobs():
            
 job_site1= NoFluffJobs()
 
-NoFluffJobs.a_element_fetch(job_site1,18)
-NoFluffJobs.jobs_details_scraping(job_site1)
-NoFluffJobs.junior_and_intern_jobs_filter(job_site1)
-NoFluffJobs.job_objects_generator(job_site1)
+
+#NoFluffJobs.jobs_details_scraping(job_site1,18)
+#NoFluffJobs.intern_jobs_filter(job_site1)
+#NoFluffJobs.KRKjunior_jobs_filter(job_site1)
+NoFluffJobs.job_objects_generator(job_site1,18)
 
 
 
