@@ -124,16 +124,24 @@ class NoFluffJobs():
 
     def KRKjunior_jobs_filter(self):
 
-        key_words = ["junior", "Junior"] 
+        permanent_key_words = ["junior", "Junior"]
+        locations = ["Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna,", "Zdalna,", "zdalna", "Zdalna"]
         my_junior_list = []
+
         for job in self.jobs_all_details:            
             
             job_title = job[0]
             job_title = job_title.text
             job_title = job_title.split()
-            for key_word in key_words:
+            
+            for key_word in permanent_key_words:
                 if key_word in job_title:
-                    my_junior_list.append(job)
+                    for location in locations:
+                        region = job[4]
+                        region = region.text
+                        region = region.split()
+                        if location in region:
+                            my_junior_list.append(job)
 
             self.my_junior_list = my_junior_list
             
