@@ -105,10 +105,10 @@ class NoFluffJobs():
 
 
 
-    def junior_and_intern_jobs_filter(self):
+    def intern_jobs_filter(self):
 
-        key_words = ["junior", "Junior", "intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
-        my_jobs_list = []
+        key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
+        my_internships_list = []
         for job in self.jobs_all_details:            
             
             job_title = job[0]
@@ -116,11 +116,30 @@ class NoFluffJobs():
             job_title = job_title.split()
             for key_word in key_words:
                 if key_word in job_title:
-                    my_jobs_list.append(job)
+                    my_internships_list.append(job)
 
-            self.my_jobs_list = my_jobs_list
+            self.my_internships_list = my_internships_list
             
-        return self.my_jobs_list
+        return self.my_internships_list
+
+    def KRKjunior_jobs_filter(self):
+
+        key_words = ["junior", "Junior"] 
+        my_junior_list = []
+        for job in self.jobs_all_details:            
+            
+            job_title = job[0]
+            job_title = job_title.text
+            job_title = job_title.split()
+            for key_word in key_words:
+                if key_word in job_title:
+                    my_junior_list.append(job)
+
+            self.my_junior_list = my_junior_list
+            
+        return self.my_junior_list
+
+        
 
     def job_objects_generator(self):
 
@@ -129,8 +148,10 @@ class NoFluffJobs():
         job_objects_list = []
 
         i = 1
+
+        my_jobs_list = self.my_junior_list + self.my_internships_list
         
-        for job in self.my_jobs_list:
+        for job in my_jobs_list:
             global title
             title = job[0]
             try:
@@ -166,8 +187,7 @@ class NoFluffJobs():
             except AttributeError:
                 region = "No Info"
 
-            
-                   
+                               
 
             print (f" JOB no {i}:\n Title: {title},\n Company: {company},\n Salary: {salary},\n Technology: {technology},\n Region: {region}\n\n\n")
 
@@ -211,7 +231,8 @@ job_site1= NoFluffJobs()
 
 NoFluffJobs.a_element_fetch(job_site1,18)
 NoFluffJobs.jobs_details_scraping(job_site1)
-NoFluffJobs.junior_and_intern_jobs_filter(job_site1)
+NoFluffJobs.intern_jobs_filter(job_site1)
+NoFluffJobs.KRKjunior_jobs_filter(job_site1)
 NoFluffJobs.job_objects_generator(job_site1)
 
 
