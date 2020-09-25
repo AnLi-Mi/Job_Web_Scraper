@@ -16,7 +16,7 @@ class Jobs:
      
         return f"{self.name}\n Title: {self.position},\n Company: {self.company},\n Salary: {self.salary},\n Technology: {self.technology},\n Region: {self.region}\n\n\n"
     
-class JobSites():
+class JobSites:
 
     def __init__ (self, url):
         self.url=url
@@ -158,6 +158,7 @@ class NoFluffJobs(JobSites):
 
         print ("JOB OFFERS FROM NOFLUFFJOBS SITE:")
           
+        global job_objects_list
         job_objects_list = []
 
         i = 1
@@ -171,6 +172,7 @@ class NoFluffJobs(JobSites):
             global title
             title = job[0]
             i = str(i)
+            global name
             name = "Job "+i
             i = int(i)
             try:
@@ -209,7 +211,7 @@ class NoFluffJobs(JobSites):
                                
 
             print (f" JOB no {i}:\n Title: {title},\n Company: {company},\n Salary: {salary},\n Technology: {technology},\n Region: {region}\n\n\n")
-
+            global x
             x = Jobs(name, title, company, technology, salary, region)
             job_objects_list.append(x)
 
@@ -233,6 +235,17 @@ job_site1= NoFluffJobs()
 #NoFluffJobs.intern_jobs_filter(job_site1)
 #NoFluffJobs.KRKjunior_jobs_filter(job_site1)
 NoFluffJobs.job_objects_generator(job_site1,18)
+
+print ('--------------------------------------------')
+
+obj_for_test = Jobs( "nametest", "titletest", "comapnytest", "techtest", "salarytest", "regiontest")
+obj_for_test2 = Jobs( "nametest2", "titletest2", "comapnytest2", "techtest2", "salarytest2", "regiontest2")
+
+import gc
+
+for obj in gc.get_objects():
+    if isinstance(obj, Jobs):
+        print (obj)
 
 
 
