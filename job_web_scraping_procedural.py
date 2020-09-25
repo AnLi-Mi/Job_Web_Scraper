@@ -3,31 +3,19 @@ from bs4 import BeautifulSoup
 from requests_html import HTMLSession
 
 
-class JobSites:
-
-    def __init__ (self, url):
-        self.url = url
 
 
-    def jobs_fetch(self):
-    
-        #scraping results for each page
-        page = requests.get(self.url)
-        soup = BeautifulSoup(page.content, 'html.parser')
-        #filtering only elementswhich are <a> - like clickable job offer 
-        jobs = soup.find_all('a')
-        return jobs
+
+def jobs_fetch(url):
+            
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, 'html.parser')
+    #filtering only elementswhich are <a> - like clickable job offer 
+    jobs = soup.find_all('a')
+    return jobs
 
     #def permanent_jobs_krk_fetch(self, job_fetch):
-        
-class NoFluffJobs(JobSites):
-    pass
-
-class BulldogJobs(JobSites):
-    pass
-
-nofluffjobs = NoFluffJobs('https://nofluffjobs.com/pl/jobs/python?criteria=python&page=')
-bulldogjobs = BulldogJobs('https://bulldogjob.pl/companies/jobs/s/skills,Python?page=')
+     
 
 def permanent_jobs_krk_fetch(job):
 
