@@ -221,8 +221,8 @@ class NoFluffJobs(JobSites):
         #    global job1
          #   job1=job_object
 
-        for job_object in job_objects_list:
-            print (job_object)
+        #for job_object in job_objects_list:
+         #   print (job_object)
 
                 
         #return
@@ -241,11 +241,24 @@ print ('--------------------------------------------')
 obj_for_test = Jobs( "nametest", "titletest", "comapnytest", "techtest", "salarytest", "regiontest")
 obj_for_test2 = Jobs( "nametest2", "titletest2", "comapnytest2", "techtest2", "salarytest2", "regiontest2")
 
-import gc
 
-for obj in gc.get_objects():
-    if isinstance(obj, Jobs):
-        print (obj)
+def jobclassvariables():
+
+    import gc
+
+    for k in range(3):
+        for obj in gc.get_objects():
+            if isinstance(obj, Jobs):
+                #print (obj)
+            
+                #print (k)
+                exec(f'job_{k} = obj')
+                
+    #print(job_1.name)            
+    #print(job_2.name) 
+    #print(job_3.name) 
+    #print(job_4.name) 
+    #print(job_5.name) 
 
 
 
