@@ -18,7 +18,8 @@ class Jobs:
     
 class JobSites:
 
-    def __init__ (self, url):
+    def __init__ (self, name, url):
+        self.name = name
         self.url=url
 
     def a_element_fetch(self,number_of_pages):
@@ -48,11 +49,10 @@ class JobSites:
     
             
 class NoFluffJobs(JobSites):
-
+    
     url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="
 
-    def __init__ (self):
-        pass
+   
     
   
    
@@ -236,7 +236,7 @@ class NoFluffJobs(JobSites):
      
 
            
-job_site1= NoFluffJobs()
+job_site1= NoFluffJobs("nofluff", "https://nofluffjobs.com/pl/jobs/python?criteria=python&page=")
 
 
 
