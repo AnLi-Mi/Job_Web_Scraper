@@ -216,78 +216,37 @@ class NoFluffJobs(JobSites):
             job_objects_list.append(x)
 
             i=i+1
-            
-        #for job_object in job_objects_list:
-        #    global job1
-         #   job1=job_object
 
-        #for job_object in job_objects_list:
-         #   print (job_object)
+    def assign_variable_to_object(self):
 
-                
-        #return
+        import gc
+        lista = []
+
+        k=1
+        for obj in gc.get_objects():
+            if isinstance(obj, Jobs):
+                exec(f'global job_{k}')
+                exec(f'job_{k} = obj')
+                print (job_1.name, job_1.salary)
+                exec(f'print(job_{k}.name)')
+                k+=1
+
+       # print (job_3.name, job_3.salary)
+
+     
 
            
 job_site1= NoFluffJobs()
 
 
-#NoFluffJobs.jobs_details_scraping(job_site1,18)
-#NoFluffJobs.intern_jobs_filter(job_site1)
-#NoFluffJobs.KRKjunior_jobs_filter(job_site1)
+
 NoFluffJobs.job_objects_generator(job_site1,18)
+NoFluffJobs.assign_variable_to_object(job_site1)
 
-print ('--------------------------------------------')
-
-obj_for_test = Jobs( "nametest", "titletest", "comapnytest", "techtest", "salarytest", "regiontest")
-obj_for_test2 = Jobs( "nametest2", "titletest2", "comapnytest2", "techtest2", "salarytest2", "regiontest2")
-
-
-def jobclassvariables():
-
-    import gc
-    k=1
-    for obj in gc.get_objects():
-        if isinstance(obj, Jobs):
-                
-            print (obj)
-            exec(f'job_{k} = obj')
-            exec(f'print(job_{k})')
-            k+=1
-                
-    #print(job_0.name)            
-    #print(job_1.name) 
-    #print(job_2.name) 
-    #print(job_4.name) 
-    #print(job_5.name)
-
-
-#def jobclassvariables():
-
- #   import gc
-
-   # print (gc.get_objects(Jobs))
-    
-
-    #for obj in gc.get_objects():
-     #   k = gc.get_objects().index(obj)
-      #  print (k, obj)
-        
-       # if isinstance(obj, Jobs):
-                #print (obj)
-            
-                #print (k)
-        #    exec(f'job_{k} = gc.get_objects()[k]')
-
-
-  #  print(job_1.name)            
-   # print(job_2.name) 
-    #print(job_3.name) 
-   # print(job_4.name) 
-   # print(job_5.name)   
+#print (job_3.name, job_3.salary)
 
 
 
-jobclassvariables()
 
 
 
