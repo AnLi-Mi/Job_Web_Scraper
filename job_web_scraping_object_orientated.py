@@ -245,24 +245,49 @@ obj_for_test2 = Jobs( "nametest2", "titletest2", "comapnytest2", "techtest2", "s
 def jobclassvariables():
 
     import gc
+    k=1
+    for obj in gc.get_objects():
+        if isinstance(obj, Jobs):
+                
+            print (obj)
+            exec(f'job_{k} = obj')
+            exec(f'print(job_{k})')
+            k+=1
+                
+    #print(job_0.name)            
+    #print(job_1.name) 
+    #print(job_2.name) 
+    #print(job_4.name) 
+    #print(job_5.name)
 
-    for k in range(3):
-        for obj in gc.get_objects():
-            if isinstance(obj, Jobs):
+
+#def jobclassvariables():
+
+ #   import gc
+
+   # print (gc.get_objects(Jobs))
+    
+
+    #for obj in gc.get_objects():
+     #   k = gc.get_objects().index(obj)
+      #  print (k, obj)
+        
+       # if isinstance(obj, Jobs):
                 #print (obj)
             
                 #print (k)
-                exec(f'job_{k} = obj')
-                
-    #print(job_1.name)            
-    #print(job_2.name) 
+        #    exec(f'job_{k} = gc.get_objects()[k]')
+
+
+  #  print(job_1.name)            
+   # print(job_2.name) 
     #print(job_3.name) 
-    #print(job_4.name) 
-    #print(job_5.name) 
+   # print(job_4.name) 
+   # print(job_5.name)   
 
 
 
-
+jobclassvariables()
 
 
 
