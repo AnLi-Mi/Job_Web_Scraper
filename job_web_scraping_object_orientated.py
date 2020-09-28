@@ -18,10 +18,9 @@ class Jobs:
 
 # creating a class for websites with job offer we want to scrape    
 class JobSites:
-    def __init__ (self, name, url):
+    def __init__ (self, name):
         self.name = name
-        self.url=url
-
+        
         
     #fetching all <a> elements as job ads are presented as <a> elements
     def a_element_fetch(self,number_of_pages):
@@ -184,7 +183,7 @@ class NoFluffJobs(JobSites):
     url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="   
   
     # fatching specific information about the job from each <a> element's content
-    def jobs_details_scraping(self, number_of_pages):
+    def jobs_details_scraping_nf(self, number_of_pages):
 
         jobs_title_and_company = []
         jobs_salary_region_tech = []
@@ -224,9 +223,36 @@ class NoFluffJobs(JobSites):
         # connecting lists containing information about the same add / <a> element
         jobs_all_details = np.concatenate((jobs_title_and_company, jobs_salary_region_tech), axis=1)
 
-       
-                         
+                             
         return (jobs_all_details)
+
+class BulldogJobs(JobSites):
+
+    url = "https://bulldogjob.pl/companies/jobs/s/skills,Python?page="
+
+    def jobs_details_scraping_bd(self, number_of_pages):
+
+        jobs_all_details = []
+        # calling a method of JobSites class
+        a_elements = JobSites.a_element_fetch(self, number_of_pages)
+
+    #looping through all <a> elements
+        for a_element in a_elements:
+            # creting global variables and assign results of scraping to them
+            global title
+            title = job.find('h2')
+            global company
+            company = job.find('div', class_='company')
+            global salary
+            salary = job.find('div', class_='salary')
+            global technology
+            technology = job.find('li', class_='tags-item')
+            global region
+            region = job.find('div', class_='location')
+            jobs_all_details.append([title, company, salary, technology, region])
+
+            return (jobs_all_details)
+
 
 
 
@@ -236,12 +262,15 @@ class NoFluffJobs(JobSites):
      
 
 # creating an object of NoFluffJobs class            
-job_site1= NoFluffJobs("nofluff", "https://nofluffjobs.com/pl/jobs/python?criteria=python&page=")
+job_site1= NoFluffJobs("nofluff")
+job_site2= BulldogJobs("bulldog")
 
 
 
 NoFluffJobs.job_objects_generator(job_site1,18)
-NoFluffJobs.assign_variable_to_object(job_site1)
+BulldogJobs.job_objects_generator(job_site2,18)
+
+#NoFluffJobs.assign_variable_to_object(job_site1)
 
 
 
