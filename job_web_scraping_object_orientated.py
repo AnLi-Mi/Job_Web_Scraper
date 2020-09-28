@@ -18,10 +18,9 @@ class Jobs:
 
 # creating a class for websites with job offer we want to scrape    
 class JobSites:
-    def __init__ (self, name, url):
+    def __init__ (self, name):
         self.name = name
-        self.url=url
-
+        
         
     #fetching all <a> elements as job ads are presented as <a> elements
     def a_element_fetch(self,number_of_pages):
@@ -236,7 +235,7 @@ class NoFluffJobs(JobSites):
      
 
 # creating an object of NoFluffJobs class            
-job_site1= NoFluffJobs("nofluff", "https://nofluffjobs.com/pl/jobs/python?criteria=python&page=")
+job_site1= NoFluffJobs("nofluff")
 
 
 
