@@ -50,60 +50,7 @@ class JobSites:
  
         return a_list
 
-    
-# creating a child class for the all sites with results in NoFluffJobs            
-class NoFluffJobs(JobSites):
-    # creating a class attribute 
-    url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="   
-  
-    # fatching specific information about the job from each <a> element's content
-    def jobs_details_scraping(self, number_of_pages):
-
-        jobs_title_and_company = []
-        jobs_salary_region_tech = []
-
-        # calling a method of JobSites class
-        a_elements = JobSites.a_element_fetch(self, number_of_pages)
-
-        for a_element in a_elements:
-                
-            # scraping ad's main information from first 'div' element and adding them to a list
-            name=a_element.find_all('div', class_="posting-title__wrapper")
-            for n in name:
-                global title
-                title = n.find('h4')
-                global company
-                company=n.find('span')              
-                jobs_title_and_company.append([title, company])
-                        
-            #scraping ad's further information details from second 'div' element and adding them to a list
-            details =a_element.find_all('div', class_="posting-info position-relative d-none d-lg-flex flex-grow-1")
-
-            for d in details:
-                global salary
-                salary = d.find('span', class_="text-truncate badgy salary btn btn-outline-secondary btn-sm")               
-                global technology
-                technology = d.find('object')                
-                global region
-                region = d.find('span', class_="posting-info__location d-flex align-items-center ml-auto")
-                # spliting the scrped region into a list so I can loop through its individual words later
-                
-                jobs_salary_region_tech.append([salary, technology, region])
-
-        # turning both lists to arrays so I can connect lists refering to the same <a> element
-        jobs_title_and_company = np.array(jobs_title_and_company, dtype=object)
-        jobs_salary_region_tech = np.array(jobs_salary_region_tech, dtype=object) 
-
-        # connecting lists containing information about the same add / <a> element
-        jobs_all_details = np.concatenate((jobs_title_and_company, jobs_salary_region_tech), axis=1)
-
-       
-                         
-        return (jobs_all_details)
-
-
-
-    # function filtering only jobs' ads with key word "internship" in it
+     # function filtering only jobs' ads with key word "internship" in it
     def intern_jobs_filter(self, number_of_pages):
 
         key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
@@ -230,6 +177,60 @@ class NoFluffJobs(JobSites):
                 print (job_1.name, job_1.salary)
                 exec(f'print(job_{k}.name)')
                 k+=1
+    
+# creating a child class for the all sites with results in NoFluffJobs            
+class NoFluffJobs(JobSites):
+    # creating a class attribute 
+    url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="   
+  
+    # fatching specific information about the job from each <a> element's content
+    def jobs_details_scraping(self, number_of_pages):
+
+        jobs_title_and_company = []
+        jobs_salary_region_tech = []
+
+        # calling a method of JobSites class
+        a_elements = JobSites.a_element_fetch(self, number_of_pages)
+
+        for a_element in a_elements:
+                
+            # scraping ad's main information from first 'div' element and adding them to a list
+            name=a_element.find_all('div', class_="posting-title__wrapper")
+            for n in name:
+                global title
+                title = n.find('h4')
+                global company
+                company=n.find('span')              
+                jobs_title_and_company.append([title, company])
+                        
+            #scraping ad's further information details from second 'div' element and adding them to a list
+            details =a_element.find_all('div', class_="posting-info position-relative d-none d-lg-flex flex-grow-1")
+
+            for d in details:
+                global salary
+                salary = d.find('span', class_="text-truncate badgy salary btn btn-outline-secondary btn-sm")               
+                global technology
+                technology = d.find('object')                
+                global region
+                region = d.find('span', class_="posting-info__location d-flex align-items-center ml-auto")
+                # spliting the scrped region into a list so I can loop through its individual words later
+                
+                jobs_salary_region_tech.append([salary, technology, region])
+
+        # turning both lists to arrays so I can connect lists refering to the same <a> element
+        jobs_title_and_company = np.array(jobs_title_and_company, dtype=object)
+        jobs_salary_region_tech = np.array(jobs_salary_region_tech, dtype=object) 
+
+        # connecting lists containing information about the same add / <a> element
+        jobs_all_details = np.concatenate((jobs_title_and_company, jobs_salary_region_tech), axis=1)
+
+       
+                         
+        return (jobs_all_details)
+
+
+
+   
 
 
      
