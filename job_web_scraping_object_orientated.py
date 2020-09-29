@@ -1,3 +1,32 @@
+#STEPS OF THE PROGRAM:
+#
+#1. scraping each site of website results to find <a> elements as job ads are presented
+# in a clickable <a> elements and placing them into a list 'a_list' in their HTML format
+# - method of JobSites class, the same for all websites
+#
+#2. looping through all <a> elements in the list to fatch specific information
+# about each job: title, company, salary, technology, region and placing them
+# in a new list 'jobs_all_details' (still in HTML format) - method spacific for each website/
+# each child class as each site has different structure
+#
+#3. connecting 'jobs_all_details' lists from different child classes and looping
+# through their elements to find key words descripitng the job titles or
+# job location to filter the required ones and put them to a new list 'my_jobs_list" -
+# the same method for all websites - method of parent class
+#
+#4. looping through all elements of 'my_jobs_list', modify them to a text/string
+# format and present them nicely
+#
+#5. turning all filtred jobs into an object of Jobs class and assing their details
+# as class attribute
+#
+#6. calling all the methods to dispaly all the results
+
+
+
+
+
+
 import requests
 from bs4 import BeautifulSoup
 import numpy as np
