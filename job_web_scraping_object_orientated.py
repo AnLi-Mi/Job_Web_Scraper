@@ -129,10 +129,8 @@ class JobSites:
                         region = region.split()
                         if location in region:
                             my_junior_list.append(job)
-
-            self.my_junior_list = my_junior_list
-            
-        return self.my_junior_list
+                        
+        return my_junior_list
 
         
     # method creating Jobs class object from filtered jobs ads
@@ -143,8 +141,8 @@ class JobSites:
 
         i = 1
 
-        my_internships_list= NoFluffJobs.intern_jobs_filter(self, number_of_pages)
-        my_junior_list = NoFluffJobs.KRKjunior_jobs_filter(self, number_of_pages)
+        my_internships_list= JobSites.intern_jobs_filter(self, number_of_pages)
+        my_junior_list = JobSites.KRKjunior_jobs_filter(self, number_of_pages)
 
         my_jobs_list = my_internships_list + my_junior_list
 
@@ -273,31 +271,25 @@ class BulldogJobs(JobSites):
         jobs_all_details = []
         # calling a method of JobSites class
         a_elements = JobSites.a_element_fetch(self, number_of_pages)
-
-       # print (f' TESTUUUUJE!! {a_elements}')
-        
+       
         #looping through all <a> elements
         for a_element in a_elements:
             # creting global variables and assign results of scraping to them
             global title
             title = a_element.find('h4', class_="posting-title__position")
-            print (title)
             global company
             company = a_element.find('span', class_="posting-title__company")
-            print (company)
             global salary
             salary = a_element.find('span', class_='text-truncate badgy salary btn btn-outline-secondary btn-sm')
-            print (salary)
             global technology
-            technology = a_element.find('li', class_='tags-item')
-            print (technology)
+            technology = a_element.find('a', class_="btn text-truncate btn-outline-secondary btn-sm")
             global region
-            region = a_element.find('div', class_='location')
-            print (region)
-            jobs_all_details.append([title, company, salary, technology, region])
+            region = a_element.find('span', class_='posting-info__location d-flex align-items-center ml-auto')
+
+            if title is not None:
+                jobs_all_details.append([title, company, salary, technology, region])
 
         
-       # print (jobs_all_details)
         return (jobs_all_details)
 
 
