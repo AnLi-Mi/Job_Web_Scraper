@@ -1,3 +1,32 @@
+#STEPS OF THE PROGRAM:
+#
+#1. scraping each site of website results to find <a> elements as job ads are presented
+# in a clickable <a> elements and placing them into a list 'a_list' in their HTML format
+# - method of JobSites class, the same for all websites
+#
+#2. looping through all <a> elements in the list to fatch specific information
+# about each job: title, company, salary, technology, region and placing them
+# in a new list 'jobs_all_details' (still in HTML format) - method spacific for each website/
+# each child class as each site has different structure
+#
+#3. connecting 'jobs_all_details' lists from different child classes and looping
+# through their elements to find key words descripitng the job titles or
+# job location to filter the required ones and put them to a new list 'my_jobs_list" -
+# the same method for all websites - method of parent class
+#
+#4. looping through all elements of 'my_jobs_list', modify them to a text/string
+# format and present them nicely
+#
+#5. turning all filtred jobs into an object of Jobs class and assing their details
+# as class attribute
+#
+#6. calling all the methods to dispaly all the results
+
+
+
+
+
+
 import requests
 from bs4 import BeautifulSoup
 import numpy as np
@@ -54,9 +83,15 @@ class JobSites:
 
         key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
         my_internships_list = []
-        jobs_all_details = NoFluffJobs.jobs_details_scraping(self, number_of_pages)
-        for job in jobs_all_details:            
-            
+        
+        jobs_all_details_NF = NoFluffJobs.jobs_details_scraping(self, number_of_pages)
+        jobs_all_details_NF = np.array(jobs_all_details_NF, dtype=object)
+        jobs_all_details_BD = BulldogJobs.jobs_details_scraping(self, number_of_pages)
+        jobs_all_details_BD = np.array(jobs_all_details_BD, dtype=object)
+        jobs_all_details = np.vstack((jobs_all_details_BD, jobs_all_details_NF))
+        
+        for job in jobs_all_details:
+                        
             job_title = job[0]
             job_title = job_title.text
             job_title = job_title.split()
@@ -74,9 +109,14 @@ class JobSites:
         locations = ["Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna,", "Zdalna,", "zdalna", "Zdalna"]
         my_junior_list = []
 
-        jobs_all_details = NoFluffJobs.jobs_details_scraping(self, number_of_pages)
-        for job in jobs_all_details:            
-    
+        jobs_all_details_NF = NoFluffJobs.jobs_details_scraping(self, number_of_pages)
+        jobs_all_details_NF = np.array(jobs_all_details_NF, dtype=object)
+        jobs_all_details_BD = BulldogJobs.jobs_details_scraping(self, number_of_pages)
+        jobs_all_details_BD = np.array(jobs_all_details_BD, dtype=object)
+        jobs_all_details = np.vstack((jobs_all_details_BD, jobs_all_details_NF))
+      
+        for job in jobs_all_details:
+                
             job_title = job[0]
             job_title = job_title.text
             job_title = job_title.split()
@@ -89,24 +129,20 @@ class JobSites:
                         region = region.split()
                         if location in region:
                             my_junior_list.append(job)
-
-            self.my_junior_list = my_junior_list
-            
-        return self.my_junior_list
+                        
+        return my_junior_list
 
         
     # method creating Jobs class object from filtered jobs ads
     def job_objects_generator(self, number_of_pages):
-
-        print ("JOB OFFERS FROM NOFLUFFJOBS SITE:")
-          
+                
         global job_objects_list
         job_objects_list = []
 
         i = 1
 
-        my_internships_list= NoFluffJobs.intern_jobs_filter(self, number_of_pages)
-        my_junior_list = NoFluffJobs.KRKjunior_jobs_filter(self, number_of_pages)
+        my_internships_list= JobSites.intern_jobs_filter(self, number_of_pages)
+        my_junior_list = JobSites.KRKjunior_jobs_filter(self, number_of_pages)
 
         my_jobs_list = my_internships_list + my_junior_list
 
@@ -183,7 +219,7 @@ class NoFluffJobs(JobSites):
     url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="   
   
     # fatching specific information about the job from each <a> element's content
-    def jobs_details_scraping_nf(self, number_of_pages):
+    def jobs_details_scraping(self, number_of_pages):
 
         jobs_title_and_company = []
         jobs_salary_region_tech = []
@@ -223,35 +259,38 @@ class NoFluffJobs(JobSites):
         # connecting lists containing information about the same add / <a> element
         jobs_all_details = np.concatenate((jobs_title_and_company, jobs_salary_region_tech), axis=1)
 
-                             
+       # print (jobs_all_details)                                  
         return (jobs_all_details)
 
 class BulldogJobs(JobSites):
 
     url = "https://bulldogjob.pl/companies/jobs/s/skills,Python?page="
 
-    def jobs_details_scraping_bd(self, number_of_pages):
+    def jobs_details_scraping(self, number_of_pages):
 
         jobs_all_details = []
         # calling a method of JobSites class
         a_elements = JobSites.a_element_fetch(self, number_of_pages)
-
-    #looping through all <a> elements
+       
+        #looping through all <a> elements
         for a_element in a_elements:
             # creting global variables and assign results of scraping to them
             global title
-            title = job.find('h2')
+            title = a_element.find('h4', class_="posting-title__position")
             global company
-            company = job.find('div', class_='company')
+            company = a_element.find('span', class_="posting-title__company")
             global salary
-            salary = job.find('div', class_='salary')
+            salary = a_element.find('span', class_='text-truncate badgy salary btn btn-outline-secondary btn-sm')
             global technology
-            technology = job.find('li', class_='tags-item')
+            technology = a_element.find('a', class_="btn text-truncate btn-outline-secondary btn-sm")
             global region
-            region = job.find('div', class_='location')
-            jobs_all_details.append([title, company, salary, technology, region])
+            region = a_element.find('span', class_='posting-info__location d-flex align-items-center ml-auto')
 
-            return (jobs_all_details)
+            if title is not None:
+                jobs_all_details.append([title, company, salary, technology, region])
+
+        
+        return (jobs_all_details)
 
 
 
