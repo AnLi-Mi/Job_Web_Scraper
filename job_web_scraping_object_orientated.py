@@ -29,7 +29,6 @@
 
 import requests
 from bs4 import BeautifulSoup
-#import numpy as np
 
 
 # creating a class for all filtered jobs scrapped from the job sites
@@ -97,6 +96,9 @@ class JobSites:
         for job in jobs_all_details_BD:
            jobs_all_details.append(job)
 
+
+        print (f'Internships jobs to filter: {len(jobs_all_details)}')
+
                 
         for job in jobs_all_details:
                         
@@ -106,15 +108,16 @@ class JobSites:
             for key_word in key_words:
                 if key_word in job_title:
                     my_internships_list.append(job)
-
+                    
+        print (f'Internships result: {len(my_internships_list)}')
                        
         return my_internships_list
 
     # function filtering only jobs's ads with key word "Junior" in it and location in Kraków
     def KRKjunior_jobs_filter(self, number_of_pages):
 
-        permanent_key_words = ["junior", "Junior"]
-        locations = ["Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna,", "Zdalna,", "zdalna", "Zdalna"]
+        permanent_key_words = ["Junior"]
+        locations = ["Warszawa", "Warszawa,", "Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna,", "Zdalna,", "zdalna", "Zdalna"]
         my_junior_list = []
         jobs_all_details = []
        
@@ -130,6 +133,8 @@ class JobSites:
         for job in jobs_all_details_BD:
            jobs_all_details.append(job)
 
+        print (f'KRKjunior jobs to filter: {len(jobs_all_details)}')
+
                  
         for job in jobs_all_details:
                 
@@ -138,13 +143,25 @@ class JobSites:
             job_title = job_title.split()
             
             for key_word in permanent_key_words:
+                print (key_word)
                 if key_word in job_title:
+                    print (key_word)
+                    print (job_title)
+                    print('-------------------')
                     for location in locations:
+                        #print (location)
                         region = job[4]
                         region = region.text
                         region = region.split()
                         if location in region:
+                            #print ('-------------------------')
+                            #print(f'Job: {job_title}')
+                            #print(f'Region: {region}')
+                            #print(f'Key word lokation: {location}')
+                            #print ('-------------------------')
                             my_junior_list.append(job)
+
+        print (f'KRKjunior jobs results: {len(my_junior_list)}')
                         
         return my_junior_list
 
@@ -276,20 +293,11 @@ class NoFluffJobs(JobSites):
 
                    
             if job_all_details:
-                jobs_all_details.append(job_all_details)
-                
-
-                      
-                #jobs_salary_region_tech.append([salary, technology, region])
-
-        # turning both lists to arrays so I can connect lists refering to the same <a> element
-        #jobs_title_and_company = np.array(jobs_title_and_company, dtype=object)
-        #jobs_salary_region_tech = np.array(jobs_salary_region_tech, dtype=object) 
-
-        # connecting lists containing information about the same add / <a> element
-        #jobs_all_details = np.concatenate((jobs_title_and_company, jobs_salary_region_tech), axis=1)
+                jobs_all_details.append(job_all_details)                     
                                   
         return (jobs_all_details)
+
+    
 
 class BulldogJobs(JobSites):
 
