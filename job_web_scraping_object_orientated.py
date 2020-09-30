@@ -50,8 +50,9 @@ class JobSites:
         self.name = name
         
         
+        
     #fetching all <a> elements as job ads are presented as <a> elements
-    def a_element_fetch(self,number_of_pages):
+    def a_element_fetch(self,number_of_pages, url):
 
         a_list=[]
         i=1
@@ -59,10 +60,9 @@ class JobSites:
         #looping through the given nuber of pages with results
         while i < number_of_pages + 1:
             i = str(i)
-            url = self.url + i
-                     
+                                 
             #scraping results for each page
-            page = requests.get(url)
+            page = requests.get(url+i)
             soup = BeautifulSoup(page.content, 'html.parser')
             
             #filtering only elements which are <a> - like clickable job offer 
@@ -71,7 +71,7 @@ class JobSites:
             #looping through fetched <a> elements to add each to the list of <a> elements
             for a_element in a_elements:
                 a_list.append(a_element)
-            
+                    
             i = int(i)
             i = i+1
  
@@ -85,23 +85,28 @@ class JobSites:
         jobs_all_details = []
        
         jobs_all_details_NF = NoFluffJobs.jobs_details_scraping(self, number_of_pages)
+        print (f' On FLUFFJOBS we have {len(jobs_all_details_NF)} jobs to select from')
        # jobs_all_details_NF = np.array(jobs_all_details_NF, dtype=object)
-        jobs_all_details_BD = BulldogJobs.jobs_details_scraping(self, number_of_pages)
+        jobs_all_details_BD = BulldogJobs.jobs_details_scraping(self, number_of_pages) #!!! BUG jobs_all_details_DB lists NOFLUFF jobs 
+        print (f' On BULLDOGJOBS we have {len(jobs_all_details_BD)} jobs to select from')
        # jobs_all_details_BD = np.array(jobs_all_details_BD, dtype=object)
        # jobs_all_details = np.vstack((jobs_all_details_BD, jobs_all_details_NF))
 
+       
         for job in jobs_all_details_NF:
-           jobs_all_details.append(job)
+            jobs_all_details.append(job)
 
-        for job in jobs_all_details_BD:
-           jobs_all_details.append(job)
-
-
+      
+           
+        
+        for job in jobs_all_details_BD:                 
+            jobs_all_details.append(job)
+                      
         print (f'Internships jobs to filter: {len(jobs_all_details)}')
-
-                
-        for job in jobs_all_details:
-                        
+        
+    
+        for job in jobs_all_details: 
+       
             job_title = job[0]
             job_title = job_title.text
             job_title = job_title.split()
@@ -116,12 +121,12 @@ class JobSites:
     # function filtering only jobs's ads with key word "Junior" in it and location in Kraków
     def KRKjunior_jobs_filter(self, number_of_pages):
 
-        permanent_key_words = ["Junior"]
+        permanent_key_words = ["Junior", "junior"]
         locations = ["Warszawa", "Warszawa,", "Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna,", "Zdalna,", "zdalna", "Zdalna"]
         my_junior_list = []
         jobs_all_details = []
        
-        jobs_all_details_NF = NoFluffJobs.jobs_details_scraping(self, number_of_pages)
+        jobs_all_details_NF = NoFluffJobs.jobs_details_scraping(self, number_of_pages)        
        # jobs_all_details_NF = np.array(jobs_all_details_NF, dtype=object)
         jobs_all_details_BD = BulldogJobs.jobs_details_scraping(self, number_of_pages)
        # jobs_all_details_BD = np.array(jobs_all_details_BD, dtype=object)
@@ -143,22 +148,12 @@ class JobSites:
             job_title = job_title.split()
             
             for key_word in permanent_key_words:
-                print (key_word)
-                if key_word in job_title:
-                    print (key_word)
-                    print (job_title)
-                    print('-------------------')
-                    for location in locations:
-                        #print (location)
+                if key_word in job_title:                  
+                    for location in locations:                        
                         region = job[4]
                         region = region.text
                         region = region.split()
                         if location in region:
-                            #print ('-------------------------')
-                            #print(f'Job: {job_title}')
-                            #print(f'Region: {region}')
-                            #print(f'Key word lokation: {location}')
-                            #print ('-------------------------')
                             my_junior_list.append(job)
 
         print (f'KRKjunior jobs results: {len(my_junior_list)}')
@@ -248,8 +243,10 @@ class JobSites:
     
 # creating a child class for the all sites with results in NoFluffJobs            
 class NoFluffJobs(JobSites):
-    # creating a class attribute 
-    url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="   
+
+  #  def __init__ (self, name, url):
+   #     self.name = name
+   
   
     # fatching specific information about the job from each <a> element's content
     def jobs_details_scraping(self, number_of_pages):
@@ -258,7 +255,7 @@ class NoFluffJobs(JobSites):
         # jobs_salary_region_tech = []
 
         # calling a method of JobSites class
-        a_elements = JobSites.a_element_fetch(self, number_of_pages)
+        a_elements = JobSites.a_element_fetch(self, number_of_pages, url="https://nofluffjobs.com/pl/jobs/python?criteria=python&page=" )
         jobs_all_details = []
 
         for a_element in a_elements:
@@ -293,7 +290,15 @@ class NoFluffJobs(JobSites):
 
                    
             if job_all_details:
-                jobs_all_details.append(job_all_details)                     
+                jobs_all_details.append(job_all_details)
+
+      #  print (f'NOFLUFFJOBS jobs in total {len(jobs_all_details)}')
+      #  k=1 
+      #  for job in jobs_all_details:
+       #     print ('-----------------------------')
+       #     print (f'NF job no {k}')
+       #     print (job)
+       #     k+=1
                                   
         return (jobs_all_details)
 
@@ -301,50 +306,52 @@ class NoFluffJobs(JobSites):
 
 class BulldogJobs(JobSites):
 
-    url = "https://bulldogjob.pl/companies/jobs/s/skills,Python?page="
+ #   def __init__ (self, name, url):
+  #      self.name = name
+   #     self.url = "https://bulldogjob.pl/companies/jobs/s/skills,Python?page="
+    
+   
 
     def jobs_details_scraping(self, number_of_pages):
 
         jobs_all_details = []
         # calling a method of JobSites class
-        a_elements = JobSites.a_element_fetch(self, number_of_pages)
+        a_elements = JobSites.a_element_fetch(self, number_of_pages, url="https://bulldogjob.pl/companies/jobs/s/skills,Python?page=")
        
         #looping through all <a> elements
         for a_element in a_elements:
             # creting global variables and assign results of scraping to them
             global title
-            title = a_element.find('h4', class_="posting-title__position")
+            title = a_element.find('h2')
             global company
-            company = a_element.find('span', class_="posting-title__company")
+            company = a_element.find('div', class_='company')
             global salary
-            salary = a_element.find('span', class_='text-truncate badgy salary btn btn-outline-secondary btn-sm')
+            salary = a_element.find('div', class_='salary')
             global technology
-            technology = a_element.find('a', class_="btn text-truncate btn-outline-secondary btn-sm")
+            technology = a_element.find('li', class_='tags-item')
             global region
-            region = a_element.find('span', class_='posting-info__location d-flex align-items-center ml-auto')
+            region = a_element.find('div', class_='location')
 
             if title is not None:
                 jobs_all_details.append([title, company, salary, technology, region])
 
+
+        #print (f'BuLLDOG jobs in total {len(jobs_all_details)}')
+        #k=1 
+        #for job in jobs_all_details:
+         #   print ('-----------------------------')
+         #   print (f'BD job no {k}')
+          #  print (job)
+           # k+=1
+
         
         return (jobs_all_details)
+  
 
+job_site3= JobSites("testowa")
 
-
-
-   
-
-
-     
-
-# creating an object of NoFluffJobs class            
-job_site1= NoFluffJobs("nofluff")
-job_site2= BulldogJobs("bulldog")
-
-
-
-NoFluffJobs.job_objects_generator(job_site1,18)
-BulldogJobs.job_objects_generator(job_site2,18)
+JobSites.job_objects_generator(job_site3, 3)
+#BulldogJobs.job_objects_generator(job_site2,3)
 
 #NoFluffJobs.assign_variable_to_object(job_site1)
 
