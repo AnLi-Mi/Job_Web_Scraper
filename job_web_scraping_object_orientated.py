@@ -51,7 +51,7 @@ class JobSites:
         
         
     #fetching all <a> elements as job ads are presented as <a> elements
-    def a_element_fetch(self,number_of_pages):
+    def a_element_fetch(self,number_of_pages, url):
 
         a_list=[]
         i=1
@@ -59,7 +59,7 @@ class JobSites:
         #looping through the given nuber of pages with results
         while i < number_of_pages + 1:
             i = str(i)
-            url = self.url + i
+            url = url + i
                      
             #scraping results for each page
             page = requests.get(url)
@@ -80,34 +80,26 @@ class JobSites:
      # function filtering only jobs' ads with key word "internship" in it
     def intern_jobs_filter(self, number_of_pages):
 
-        key_words = ["Junior", "junior","intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
+        key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
         my_internships_list = []
         jobs_all_details = []
        
         jobs_all_details_NF = NoFluffJobs.jobs_details_scraping(self, number_of_pages)
         print (f' On FLUFFJOBS we have {len(jobs_all_details_NF)} jobs to select from')
        # jobs_all_details_NF = np.array(jobs_all_details_NF, dtype=object)
-        jobs_all_details_BD = BulldogJobs.jobs_details_scraping(self, number_of_pages)
+        jobs_all_details_BD = BulldogJobs.jobs_details_scraping(self, number_of_pages) #!!! BUG jobs_all_details_DB lists NOFLUFF jobs 
         print (f' On BULLDOGJOBS we have {len(jobs_all_details_BD)} jobs to select from')
        # jobs_all_details_BD = np.array(jobs_all_details_BD, dtype=object)
        # jobs_all_details = np.vstack((jobs_all_details_BD, jobs_all_details_NF))
 
-        k=1
+       
         for job in jobs_all_details_NF:
-            print ('---------------------------')
-            print (f'NF JOB - {k}')
-            print (job)
-            k+=1
             jobs_all_details.append(job)
 
         print (f'Jobs list on NOFLUFF: {len(jobs_all_details)}')
            
-        i = 1
-        for job in jobs_all_details_BD:
-            print ('---------------------------')
-            print (f'DB JOB - {i}')
-            print (job)
-            i+=1        
+        
+        for job in jobs_all_details_BD:                 
             jobs_all_details.append(job)
         
         print (f'Jobs list on NOFLUFF + BULLDOG: {len(jobs_all_details)}')
@@ -134,7 +126,7 @@ class JobSites:
     # function filtering only jobs's ads with key word "Junior" in it and location in Kraków
     def KRKjunior_jobs_filter(self, number_of_pages):
 
-        permanent_key_words = ["kogut", "Kogut"]
+        permanent_key_words = ["Junior", "junior"]
         locations = ["Warszawa", "Warszawa,", "Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna,", "Zdalna,", "zdalna", "Zdalna"]
         my_junior_list = []
         jobs_all_details = []
@@ -257,18 +249,17 @@ class JobSites:
 # creating a child class for the all sites with results in NoFluffJobs            
 class NoFluffJobs(JobSites):
 
-    print ('NOFLUFFJOBS!!')
     # creating a class attribute 
-    url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="   
+    #url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="   
   
     # fatching specific information about the job from each <a> element's content
-    def jobs_details_scraping(self, number_of_pages):
+    def jobs_details_scraping(self, number_of_pages, url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page=" ):
 
         # jobs_title_and_company = []
         # jobs_salary_region_tech = []
 
         # calling a method of JobSites class
-        a_elements = JobSites.a_element_fetch(self, number_of_pages)
+        a_elements = JobSites.a_element_fetch(self, number_of_pages, url)
         jobs_all_details = []
 
         for a_element in a_elements:
@@ -310,32 +301,40 @@ class NoFluffJobs(JobSites):
     
 
 class BulldogJobs(JobSites):
-    print ('BULLDOGJOBS!!')
+    
+    #url = "https://bulldogjob.pl/companies/jobs/s/skills,Python?page="
 
-    url = "https://bulldogjob.pl/companies/jobs/s/skills,Python?page="
-
-    def jobs_details_scraping(self, number_of_pages):
+    def jobs_details_scraping(self, number_of_pages, url = "https://bulldogjob.pl/companies/jobs/s/skills,Python?page="):
 
         jobs_all_details = []
         # calling a method of JobSites class
-        a_elements = JobSites.a_element_fetch(self, number_of_pages)
+        a_elements = JobSites.a_element_fetch(self, number_of_pages, url)
        
         #looping through all <a> elements
         for a_element in a_elements:
             # creting global variables and assign results of scraping to them
             global title
-            title = a_element.find('h4', class_="posting-title__position")
+            title = a_element.find('h2')
             global company
-            company = a_element.find('span', class_="posting-title__company")
+            company = a_element.find('div', class_='company')
             global salary
-            salary = a_element.find('span', class_='text-truncate badgy salary btn btn-outline-secondary btn-sm')
+            salary = a_element.find('div', class_='salary')
             global technology
-            technology = a_element.find('a', class_="btn text-truncate btn-outline-secondary btn-sm")
+            technology = a_element.find('li', class_='tags-item')
             global region
-            region = a_element.find('span', class_='posting-info__location d-flex align-items-center ml-auto')
+            region = a_element.find('div', class_='location')
 
             if title is not None:
                 jobs_all_details.append([title, company, salary, technology, region])
+
+
+        print (f'BuLLDOG jobs in total {len(jobs_all_details)}')
+        k=1 
+        for job in jobs_all_details:
+            print ('-----------------------------')
+            print (f'BD job no {k}')
+            print (job)
+            k+=1
 
         
         return (jobs_all_details)
