@@ -80,28 +80,46 @@ class JobSites:
      # function filtering only jobs' ads with key word "internship" in it
     def intern_jobs_filter(self, number_of_pages):
 
-        key_words = ["intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
+        key_words = ["Junior", "junior","intern", "Intern", "Internship", "internship", "staz", "Staz", "Staż", "staż", "praktyka", "Praktyka"] 
         my_internships_list = []
         jobs_all_details = []
        
         jobs_all_details_NF = NoFluffJobs.jobs_details_scraping(self, number_of_pages)
+        print (f' On FLUFFJOBS we have {len(jobs_all_details_NF)} jobs to select from')
        # jobs_all_details_NF = np.array(jobs_all_details_NF, dtype=object)
         jobs_all_details_BD = BulldogJobs.jobs_details_scraping(self, number_of_pages)
+        print (f' On BULLDOGJOBS we have {len(jobs_all_details_BD)} jobs to select from')
        # jobs_all_details_BD = np.array(jobs_all_details_BD, dtype=object)
        # jobs_all_details = np.vstack((jobs_all_details_BD, jobs_all_details_NF))
 
+        k=1
         for job in jobs_all_details_NF:
-           jobs_all_details.append(job)
+            print ('---------------------------')
+            print (f'NF JOB - {k}')
+            print (job)
+            k+=1
+            jobs_all_details.append(job)
 
+        print (f'Jobs list on NOFLUFF: {len(jobs_all_details)}')
+           
+        i = 1
         for job in jobs_all_details_BD:
-           jobs_all_details.append(job)
-
-
+            print ('---------------------------')
+            print (f'DB JOB - {i}')
+            print (job)
+            i+=1        
+            jobs_all_details.append(job)
+        
+        print (f'Jobs list on NOFLUFF + BULLDOG: {len(jobs_all_details)}')
+        
         print (f'Internships jobs to filter: {len(jobs_all_details)}')
-
-                
-        for job in jobs_all_details:
-                        
+        
+       # k=1
+        for job in jobs_all_details: #!!! BUG jobs_all_details is duplicated
+        #    print ('---------------------------')
+         #   print (k)
+          #  print (job)
+           # k+=1
             job_title = job[0]
             job_title = job_title.text
             job_title = job_title.split()
@@ -116,7 +134,7 @@ class JobSites:
     # function filtering only jobs's ads with key word "Junior" in it and location in Kraków
     def KRKjunior_jobs_filter(self, number_of_pages):
 
-        permanent_key_words = ["Junior"]
+        permanent_key_words = ["kogut", "Kogut"]
         locations = ["Warszawa", "Warszawa,", "Kraków,", "kraków,", "cracow,", "Cracow,", "Krakow,", "krakow,", "zdalna,", "Zdalna,", "zdalna", "Zdalna"]
         my_junior_list = []
         jobs_all_details = []
@@ -143,22 +161,12 @@ class JobSites:
             job_title = job_title.split()
             
             for key_word in permanent_key_words:
-                print (key_word)
-                if key_word in job_title:
-                    print (key_word)
-                    print (job_title)
-                    print('-------------------')
-                    for location in locations:
-                        #print (location)
+                if key_word in job_title:                  
+                    for location in locations:                        
                         region = job[4]
                         region = region.text
                         region = region.split()
                         if location in region:
-                            #print ('-------------------------')
-                            #print(f'Job: {job_title}')
-                            #print(f'Region: {region}')
-                            #print(f'Key word lokation: {location}')
-                            #print ('-------------------------')
                             my_junior_list.append(job)
 
         print (f'KRKjunior jobs results: {len(my_junior_list)}')
@@ -248,6 +256,8 @@ class JobSites:
     
 # creating a child class for the all sites with results in NoFluffJobs            
 class NoFluffJobs(JobSites):
+
+    print ('NOFLUFFJOBS!!')
     # creating a class attribute 
     url = "https://nofluffjobs.com/pl/jobs/python?criteria=python&page="   
   
@@ -300,6 +310,7 @@ class NoFluffJobs(JobSites):
     
 
 class BulldogJobs(JobSites):
+    print ('BULLDOGJOBS!!')
 
     url = "https://bulldogjob.pl/companies/jobs/s/skills,Python?page="
 
