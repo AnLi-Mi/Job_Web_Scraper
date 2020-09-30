@@ -348,14 +348,10 @@ class BulldogJobs(JobSites):
         return (jobs_all_details)
   
 
-# creating an object of NoFluffJobs class            
-job_site1= NoFluffJobs("nofluff")
-job_site2= BulldogJobs("bulldog")
+job_site3= JobSites("testowa")
 
-
-
-NoFluffJobs.job_objects_generator(job_site1,3)
-BulldogJobs.job_objects_generator(job_site2,3)
+JobSites.job_objects_generator(job_site3, 3)
+#BulldogJobs.job_objects_generator(job_site2,3)
 
 #NoFluffJobs.assign_variable_to_object(job_site1)
 
